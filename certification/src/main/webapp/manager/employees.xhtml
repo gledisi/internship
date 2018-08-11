@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<ui:include name="header" src="/components/header.xhtml" />
+
+<h:body class="nav-md">
+
+	<p:growl id="growl" life="6000" />
+
+	<ui:include name="header" src="/manager/managerSidebar.xhtml" />
+	<div id="right-panel" class="right-panel">
+
+		<ui:include name="header" src="/components/rightPanel.xhtml" />
+
+		<div class="content mt-3">
+
+			<!-- forma-->
+
+			<!-- tabela-->
+
+			<div class="col-lg-12">
+				<div class="card">
+					<div class="card-header">
+						<strong class="card-title">Employees's </strong>
+					</div>
+					<div class="card-body">
+						<h:form id="employeesForm">
+							<p:dataTable id="employeesTable" var="employee" style=" text-align: center;"
+								value="#{userCrudBean.employeesOfManager}" widgetVar="DTWVar"
+								rows="5" paginator="true"
+								paginatorTemplate="{PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15" rowIndexVar="index"
+								rowKey="#{employee.id}"
+								selection="#{userCrudBean.selectedEmployees}">
+
+								<f:facet name="header">
+									<div class="col col-sm-3">
+										<h:inputText id="search" value="#" class="form-control"
+											pt:placeholder="Search...">
+										</h:inputText>
+									</div>
+
+
+									<p:commandButton title="Delete employees" id="delete"
+										value="Employee" style="float:right" icon="ui-icon-trash"
+										actionListener="#{userCrudBean.deleteSelectedEmployees()}"
+										update=":employeesForm:employeesTable growl">
+										<p:confirm header="Confirm" message="Are you sure ?"
+											icon="ui-icon-alert" />
+									</p:commandButton>
+
+									<p:confirmDialog global="true" showEffect="fade"
+										hideEffect="fade">
+
+										<p:commandButton value="Yes" type="button"
+											styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+										<p:commandButton value="No" type="button"
+											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+									</p:confirmDialog>
+
+									<p:commandButton title="
+										Add employee"
+										id="addEmployee" action="addEmployee?faces-redirect=true"
+										value="Employee" style="float:right" icon="ui-icon-plus" />
+
+									<p:commandButton title="Add certification seletcted employees"
+										id="certificate" value="Certifications" style="float:right"
+										proces="@this" icon="ui-icon-plus"
+										update=":employeesForm:employeesTable certificationDialog"
+										oncomplete="PF('cDialog').show()" />
+
+								</f:facet>
+
+
+								<p:column selectionMode="multiple"
+									style="width:20px;text-align:center" />
+
+								<p:column style="width:30px" headerText="#">
+									<h:outputText value="#{index + 1}" />
+								</p:column>
+
+								<p:column headerText="FirstName">
+									<h:outputText value="#{employee.firstname}" />
+								</p:column>
+
+								<p:column headerText="LastName">
+									<h:outputText value="#{employee.lastname}" />
+								</p:column>
+
+								<p:column headerText="Email">
+									<h:outputText value="#{employee.email}" />
+								</p:column>
+								<p:column headerText="Birthday">
+									<h:outputText value="#{employee.birthday}" />
+								</p:column>
+								<p:column headerText="Id Card">
+									<h:outputText value="#{employee.idCard}" />
+								</p:column>
+
+								<p:column headerText="Actions" width="70px">
+
+									
+
+										<p:commandButton title="Add certification for this employee"
+											proces="@this" icon="ui-icon-plus"
+											update="certificationDialog"
+											oncomplete="PF('cDialog').show()">
+											<f:setPropertyActionListener
+												target="#{certificationBean.addCertification.employeeId}"
+												value="#{employee.id}" />
+										</p:commandButton>
+
+
+										<p:commandButton title="Edit this employee" proces="@this"
+											icon="ui-icon-pencil" update="certificationDialog"
+											oncomplete="PF('varDialog').show()">
+											<f:setPropertyActionListener target="#{userCrudBean.user}"
+												value="#{employee}" />
+										</p:commandButton>
+
+										<p:commandButton icon="ui-icon-trash"
+											title="Delete this employee" update="growl employeesTable"
+											actionListener="#{userCrudBean.deleteEmployee(employee.id)}">
+											<p:confirm header="Confirm" message="Are you sure ?"
+												icon="ui-icon-alert" />
+										</p:commandButton>
+
+										<p:confirmDialog global="true" showEffect="fade"
+											hideEffect="fade">
+
+											<p:commandButton value="Yes" type="button"
+												styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+											<p:commandButton value="No" type="button"
+												styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+										</p:confirmDialog>
+									
+
+								</p:column>
+
+							</p:dataTable>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- .content -->
+
+	<!-- dialogForAddCertification -->
+	<p:dialog id="certificationDialog" widgetVar="cDialog"
+		resizable="false" modal="true" width="500" dynamic="true">
+		<p:ajax event="close" update=":employeesForm:employeesTable" />
+		<ui:include src="addCertification.xhtml" />
+	</p:dialog>
+	<!-- .dialogForAddCertification -->
+
+
+	<!-- dialogForEditEmployee -->
+	<p:dialog id="dialog" widgetVar="varDialog" resizable="false"
+		modal="true" width="500" dynamic="true">
+		<p:ajax event="close" update=":employeesForm:employeesTable" />
+		<ui:include src="editEmployee.xhtml" />
+	</p:dialog>
+	<!-- .dialogForEditEmployee -->
+
+	<!-- /footer content -->
+	<ui:include name="footer" src="/components/footer.xhtml" />
+</h:body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<ui:include name="header" src="/components/header.xhtml" />
+
+<h:body>
+	<p:growl id="growl" life="7000" />
+
+	<ui:include name="header" src="/manager/managerSidebar.xhtml" />
+
+
+	<div id="right-panel" class="right-panel">
+
+		<ui:include name="header" src="/components/rightPanel.xhtml" />
+
+
+
+		<!-- content-->
+		<div class="content mt-3">
+
+			<!-- forma-->
+			<div class="col-lg-3"></div>
+			<div class="col-lg-6 ">
+				<h:form>
+					<div class="card">
+						<div class="card-header">
+							<strong>#{comp['ADD_EMPLOYEE']}</strong>
+						</div>
+						<div class="card-body card-block">
+							<ui:include name="form" src="employeeForm.xhtml" />
+
+							<div class="row form-group">
+								<div class="col col-md-3">
+									<label for="password" class="form-control-label">Password</label>
+								</div>
+								<div class="col-12 col-md-9">
+									<h:inputSecret id="password" class="form-control"
+										value="#{userCrudBean.user.password}"
+										pt:placeholder="**********" required="true"
+										requiredMessage="Passwordi nuk mund te lihet bosh"
+										validatorMessage="Passwordi duhet te kete te pakten 6 karaktere , nje shkronje , nje numer dhe nje karakter special">
+										<f:validateRegex
+											pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{6,20})" />
+									</h:inputSecret>
+								</div>
+							</div>
+						</div>
+						<div class="card-footer">
+							<div class="offset-md-2 col-md-8">
+
+								<h:commandButton class="btn btn-primary btn-lg btn-block"
+									action="#{userCrudBean.addEmployee()}" value="ADD EMPLOYEE" />
+
+							</div>
+						</div>
+					</div>
+				</h:form>
+			</div>
+		</div>
+	</div>
+</h:body>
+</html>

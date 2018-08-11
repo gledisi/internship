@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<ui:include name="header" src="/components/header.xhtml" />
+
+
+<h:body>
+	<p:growl id="growl" life="7000" />
+
+	<ui:include name="header" src="/manager/managerSidebar.xhtml" />
+
+
+	<div id="right-panel" class="right-panel">
+
+		<ui:include name="header" src="/components/rightPanel.xhtml" />
+
+
+
+		<!-- content-->
+		<div class="content mt-3">
+
+			<!-- forma-->
+
+			<!-- tabela-->
+
+			<div class="col-lg-12">
+				<div class="card">
+					<div class="card-header">
+						<strong class="card-title">Employees Certifications</strong>
+					</div>
+					<div class="card-body">
+						<h:form id="emCertificateForm">
+							<p:dataTable id="emCertificateTable" var="emCertificate"
+								value="#{certificationBean.certifications}"
+								style="text-align:center" widgetVar="DTWVar" rows="5"
+								paginator="true"
+								paginatorTemplate="{PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15" rowIndexVar="index"
+								rowKey="#{emCertificate.id}"
+								selection="#{certificationBean.certificationsSelected}">
+
+								<f:facet name="header">
+
+									<p:commandButton title="Delete certificates of employees"
+										id="deleteCertificate" style="float:right"
+										icon="ui-icon-trash"
+										actionListener="#{certificationBean.deleteListCertifications()}"
+										disabled=" #" oncomplete="PF('DTWVar').filter()"
+										update=":emCertificateForm:emCertificateTable growl">
+										
+										<p:confirm header="Confirm" message="Are you sure ?"
+											icon="ui-icon-alert" />
+									</p:commandButton>
+
+									<p:confirmDialog global="true" showEffect="fade"
+										hideEffect="fade">
+
+										<p:commandButton value="Yes" type="button"
+											styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+										<p:commandButton value="No" type="button"
+											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+									</p:confirmDialog>
+
+									<p:commandButton title="Add certificate for employee"
+										id="addCertificate" action="#" style="float:right"
+										icon="ui-icon-plus" />
+
+
+								</f:facet>
+
+								<p:column style="width:30px" headerText="#">
+									<h:outputText value="#{index + 1}" />
+								</p:column>
+
+								<p:column selectionMode="multiple"
+									style="width:20px;text-align:center" />
+
+								<p:column headerText="Employee">
+									<h:outputText value="#{emCertificate.firstname}" />
+								</p:column>
+								<p:column headerText="Certificate">
+									<h:outputText value="#{emCertificate.certificatename}" />
+								</p:column>
+
+								<p:column headerText="Status">
+									<h:outputText value="#{emCertificate.status}" />
+								</p:column>
+
+								<p:column headerText="Points">
+									<h:outputText value="#{emCertificate.points}" />
+								</p:column>
+								<p:column headerText="Date">
+									<h:outputText value="#{emCertificate.date}" />
+								</p:column>
+								<p:column headerText="Actions" style="width:70px">
+
+									<p:panelGrid>
+
+										<p:commandButton icon="ui-icon-trash"
+											title="Delete this certifacte"
+											update=":emCertificateForm:emCertificateTable growl"
+											oncomplete="PF('DTWVar').filter()"
+											actionListener="#{certificationBean.deleteCertification(emCertificate.id)}">
+											<p:confirm header="Confirm" message="Are you sure ?"
+												icon="ui-icon-alert" />
+										</p:commandButton>
+
+										<p:confirmDialog global="true" showEffect="fade"
+											hideEffect="fade">
+
+											<p:commandButton value="Yes" type="button"
+												styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+											<p:commandButton value="No" type="button"
+												styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+										</p:confirmDialog>
+									</p:panelGrid>
+
+								</p:column>
+
+
+							</p:dataTable>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- .content -->
+	</div>
+	<!-- Modal per editimin -->
+
+	<ui:include name="footer" src="/components/footer.xhtml" />
+
+</h:body>
+</html>

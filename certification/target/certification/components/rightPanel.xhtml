@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<!-- Header-->
+<header id="header" class="header">
+
+<div class="header-menu">
+
+	<div class="col-sm-7">
+		<a id="menuToggle" class="menutoggle pull-left"><i
+			class="fa fa fa-tasks"></i></a>
+		<div class="header-left">
+			
+		</div>
+	</div>
+
+	<div class="col-sm-5">
+		<div class="user-area dropdown float-right">
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown"
+				aria-haspopup="true" aria-expanded="false"> <h:graphicImage
+					class="user-avatar rounded-circle" library="images"
+					name="admin.jpg" />
+
+			</a>
+
+			<div class="user-menu dropdown-menu">
+				<h:link outcome="adminProfile">
+				<i class="menu-icon fa fa-user"></i> My Profile</h:link>
+				<h:form>
+					<h:commandLink  action="#{loginBean.logOut()}">
+						<i class="fa fa-sign-out"></i> Log out</h:commandLink>
+				</h:form>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+</header>
+
+</html>

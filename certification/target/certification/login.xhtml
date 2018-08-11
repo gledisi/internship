@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<ui:insert>
+		<ui:include name="style" src="/components/styleFiles.xhtml" />
+	</ui:insert>
+</h:head>
+
+<h:body class="bg-dark">
+
+	
+      
+
+	
+	<div class="sufee-login d-flex align-content-center flex-wrap">
+		<div class="container">
+			<div class="login-content">
+				<div class="login-logo">
+					<a href="index.html"> <img class="align-content"
+						src="images/logo.png" alt="" />
+					</a>
+				</div>
+				<p:messages id="messages" closable="true" />
+				<div class="login-form">
+					<h:form>
+						<div class="form-group">
+							<label>#{comp['LABEL_EMAIL']}</label>
+							<h:inputText class="form-control" id="email" name="email"
+								value="#{loginBean.email}"
+								pt:placeholder="psh. emermbiemer@gmail.com" />
+						</div>
+						<div class="form-group">
+							<label>#{comp['LABEL_PASSWORD']}</label>
+							<h:inputSecret class="form-control" id="fjalekalimi"
+								name="password" value="#{loginBean.password}" type="password"
+								pt:placeholder="**********" />
+						</div>
+
+						<p:commandButton class="btn btn-success btn-flat m-b-30 m-t-30"
+							type="submit" value="#{comp['LOGIN_BUTTON']}" action="#{loginBean.logIn()}"
+							name="log_in" update="messages">
+						</p:commandButton>
+
+
+						<div class="register-link m-t-15 text-center">
+							<p>
+								Don't have account ?
+								<h:link outcome="sign-up" value="Sign Up Here" />
+							</p>
+						</div>
+					</h:form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<ui:insert>
+		<ui:include name="footer" src="/components/footer.xhtml" />
+	</ui:insert>
+
+</h:body>
+
+</html>

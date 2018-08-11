@@ -1,0 +1,76 @@
+.ui-widget {
+  font-family: 'Open Sans' sans-serif !important;
+  font-size: 13px !important;
+   }
+   
+.ui-corner-top { 
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+.ui-widget-header { 
+	border: none;
+	background: #fff;
+}
+
+.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, .ui-datatable tfoot th {
+	padding: 4px 10px !important;
+    overflow: hidden !important;
+     border-width: 0 !important; 
+     border-style: none !important;
+}
+
+.ui-widget-content {
+    border: 1px solid #a8a8a8;
+    color: #4f4f4f;
+    border-left: none;
+    border-right: none;
+}
+
+
+.deleteButton {
+	color: #fff !important;
+	background: #dc3545 !important;
+	font-weight: normal !important;
+	font-family: Arial,sans-serif !important;
+    font-size: 1em !important;
+    text-shadow: none !important;
+    border: 0 !important;
+}
+
+.editButton{
+	color: #fff !important;
+	background: #007bff !important;
+	font-weight: normal !important;
+	font-family: Arial,sans-serif !important;
+    font-size: 1em !important;
+    text-shadow: none !important;
+    border: 0 !important;
+    padding: .5em 1em !important;
+}
+
+.submitButton{
+	color: #fff !important;
+	background: #007bff !important;
+	font-weight: normal !important;
+	font-family: Arial,sans-serif !important;
+    font-size: 1em !important;
+    text-shadow: none !important;
+    border: 0 !important;
+}
+
+
+.ui-button-text-only .ui-button-text {
+    padding: .5em 1em !important;
+}
+
+.ui-corner-all {
+	border-radius: 0 !important;
+}
+
+
+
+.ui-inputfield {
+	padding: 9px !important;
+	}
+

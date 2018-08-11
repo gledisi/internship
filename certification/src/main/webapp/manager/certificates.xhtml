@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<ui:include name="header" src="/components/header.xhtml" />
+
+<h:body class="nav-md">
+
+	<p:growl id="growl" life="6000" />
+
+	<ui:include name="header" src="/manager/managerSidebar.xhtml" />
+	<div id="right-panel" class="right-panel">
+
+		<ui:include name="header" src="/components/rightPanel.xhtml" />
+
+		<div class="content mt-3">
+
+			<!-- forma-->
+
+			<!-- tabela-->
+
+			<div class="col-lg-12">
+				<div class="card">
+					<div class="card-header">
+						<strong class="card-title">Certificate's </strong>
+					</div>
+					<div class="card-body">
+						<h:form id="certificatesForm">
+							<p:remoteCommand name="updateTable" process="@this"
+								update="certificatesTable" />
+							<p:dataTable id="certificatesTable" var="certificate"
+								value="#{certificateBean.certificates}" widgetVar="DTWVar"
+								rows="5" paginator="true"
+								paginatorTemplate="{PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15" rowIndexVar="index"
+								rowKey="#{certificate.id}"
+								selection="#{certificateBean.certificatesSelected}">
+
+								<f:facet name="header">
+									<div class="col col-sm-3">
+										<h:inputText id="search" value="#" class="form-control"
+											pt:placeholder="Search...">
+										</h:inputText>
+									</div>
+
+
+									<p:commandButton title="Delete certificates" id="delete"
+										value="Certificate" style="float:right" icon="ui-icon-trash"
+										actionListener="#{certificateBean.deleteCertificatesSelected()}"
+										update=":certificatesForm:certificatesTable growl">
+										<p:confirm header="Confirm" message="Are you sure ?"
+											icon="ui-icon-alert" />
+									</p:commandButton>
+
+									<p:confirmDialog global="true" showEffect="fade"
+										hideEffect="fade">
+
+										<p:commandButton value="Yes" type="button"
+											styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+										<p:commandButton value="No" type="button"
+											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+									</p:confirmDialog>
+									<p:commandButton title="Add certificate" id="addCertificate"
+										value="Certificate" style="float:right" icon="ui-icon-newwin"
+										onclick="PF('varDialog').show()" immediate="true" />
+
+
+								</f:facet>
+
+
+								<p:column selectionMode="multiple"
+									style="width:20px;text-align:center" />
+
+								<p:column style="width:30px" headerText="#">
+									<h:outputText value="#{index + 1}" />
+								</p:column>
+
+								<p:column headerText="Name">
+									<h:outputText value="#{certificate.name}" />
+								</p:column>
+
+								<p:column headerText="Type">
+									<h:outputText value="#{certificate.type}" />
+								</p:column>
+
+								<p:column headerText="Actions">
+
+									<p:panelGrid>
+
+										<p:commandButton title="Edit this certificate" proces="@this"
+											icon="ui-icon-pencil" update="dialog"
+											actionListener="#{certificateBean.setEdit(true)}"
+											oncomplete="PF('varDialog').show()">
+											<f:setPropertyActionListener
+												target="#{certificateBean.certificate}"
+												value="#{certificate}" />
+										</p:commandButton>
+
+										<p:commandButton icon="ui-icon-trash"
+											title="Delete this certificate"
+											update="growl certificatesTable"
+											actionListener="#{certificateBean.deleteCertificate(certificate.id)}">
+											<p:confirm header="Confirm" message="Are you sure ?"
+												icon="ui-icon-alert" />
+										</p:commandButton>
+
+										<p:confirmDialog global="true" showEffect="fade"
+											hideEffect="fade">
+
+											<p:commandButton value="Yes" type="button"
+												styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+											<p:commandButton value="No" type="button"
+												styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+										</p:confirmDialog>
+									</p:panelGrid>
+
+								</p:column>
+
+							</p:dataTable>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- .content -->
+
+	<!-- addDialog -->
+
+	<p:dialog id="dialog" widgetVar="varDialog" resizable="false"
+		modal="true" width="500" dynamic="true">
+		<p:ajax event="close" update=":certificatesForm:certificatesTable" />
+		<ui:include src="addCertificate.xhtml" />
+	</p:dialog>
+	<!-- .addDialog -->
+
+	<!-- /footer content -->
+
+	<ui:include name="footer" src="/components/footer.xhtml" />
+</h:body>
+</html>
