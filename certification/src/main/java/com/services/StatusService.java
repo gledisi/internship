@@ -6,8 +6,6 @@ import com.dto.StatusDto;
 
 public interface StatusService {
 
-	public List<StatusDto> getAllStatus();
-
 	public List<StatusDto> getOtherStatus(String currentStatus);
 
 }

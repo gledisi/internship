@@ -10,8 +10,18 @@ public class Messages {
 	public final static ResourceBundle bundle = ResourceBundle.getBundle("messages");
 
 	public static void addMessage(String summary, String type) {
-		FacesMessage message = new FacesMessage(summary, null);
 
+		FacesMessage message = new FacesMessage(summary, null);
+		setSeverity(message, type);
+		requestContext().addMessage(null, message);
+	}
+
+	public static void addFlushMessage(String summary, String type) {
+		addMessage(summary, type);
+		requestContext().getExternalContext().getFlash().setKeepMessages(true);
+	}
+
+	private static FacesMessage setSeverity(FacesMessage message, String type) {
 		if (type == "info") {
 			message.setSeverity(FacesMessage.SEVERITY_INFO);
 		} else if (type == "error") {
@@ -23,8 +33,7 @@ public class Messages {
 		} else {
 			message.setSeverity(FacesMessage.SEVERITY_INFO);
 		}
-
-		requestContext().addMessage(null, message);
+		return message;
 	}
 
 	private static FacesContext requestContext() {

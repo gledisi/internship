@@ -11,8 +11,10 @@ public interface UserService {
 	public boolean edit(UserDto userDto);
 
 	public boolean delete(int userId);
-	
+
 	public boolean deleteList(List<UserDto> employees);
+
+	public boolean existUser(String email);
 
 	public UserDto getUserFromId(int userId);
 

@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<aside id="left-panel" class="left-panel"> <nav
+	class="navbar navbar-expand-sm navbar-default">
+
+<div class="navbar-header">
+	<button class="navbar-toggler" type="button" data-toggle="collapse"
+		data-target="#main-menu" aria-controls="main-menu"
+		aria-expanded="false" aria-label="Toggle navigation">
+		<i class="fa fa-bars"></i>
+	</button>
+</div>
+
+<div id="main-menu" class="main-menu collapse navbar-collapse">
+	<ul class="nav navbar-nav">
+		<h:outputText value="&lt;br/&gt;" escape="false" />
+		<h:outputText class="menu-title" value="My Certifications" />
+		<!-- /.menu-title -->
+
+		<li class="active"><h:link outcome="home">
+				<i class="menu-icon fa fa-certificate"></i>Certification</h:link></li>
+
+	</ul>
+
+</div>
+<!-- /.navbar-collapse --> </nav> </aside>
+<!-- /#left-panel -->
+
+</html>

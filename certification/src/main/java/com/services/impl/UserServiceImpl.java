@@ -1,10 +1,10 @@
 package com.services.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.converter.UserConverter;
 import com.dao.UserDao;
@@ -18,48 +18,50 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserDao userDao;
 
+	@Transactional
 	public boolean add(UserDto userDto) {
 		return userDao.add(UserConverter.toUser(userDto));
 	}
 
+	@Transactional
 	public boolean edit(UserDto userDto) {
 		return userDao.edit(UserConverter.toEditUser(userDto));
 	}
 
+	@Transactional
 	public boolean delete(int userId) {
 		return userDao.delete(userId);
 	}
+
+	@Transactional
 	public boolean deleteList(List<UserDto> employees) {
 		boolean control = false;
-		System.out.print("controlli"+control);
 		for (UserDto user : employees) {
 			control = userDao.delete(user.getId());
 		}
-		System.out.print("controlli"+control);
 		return control;
 	}
 
+	@Transactional
 	public UserDto getUserFromId(int userId) {
-		return UserConverter.toUserDto(userDao.getUserFromId(userId));
+		User user = userDao.getUserFromId(userId);
+		return user == null ? null : UserConverter.toUserDto(user);
 	}
 
+	@Transactional
 	public UserDto getLoggedUser(String email) {
 		User user = userDao.getLoggedUser(email);
-		if (user != null) {
-			return UserConverter.toUserDto(user);
-		} else {
-			return null;
-		}
+		return user == null ? null : UserConverter.toUserDto(user);
 	}
 
-	public List<UserDto> getEmployeesOfManager(int idManager) {
+	@Transactional
+	public boolean existUser(String email) {
+		return getLoggedUser(email) != null;
+	}
 
-		List<UserDto> userDtoList = new ArrayList<UserDto>();
-		List<User> userList = userDao.getEmployeesOfManager(idManager);
-		for (User user : userList) {
-			userDtoList.add(UserConverter.toUserDto(user));
-		}
-		return userDtoList;
+	@Transactional
+	public List<UserDto> getEmployeesOfManager(int idManager) {
+		return UserConverter.toUserListDto(userDao.getEmployeesOfManager(idManager));
 	}
 
 	// GETTERS AND SETTERS

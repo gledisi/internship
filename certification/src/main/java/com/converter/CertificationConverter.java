@@ -1,5 +1,8 @@
 package com.converter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.dto.AddCertificationDto;
 import com.dto.CertificationDto;
 import com.entity.Certificate;
@@ -43,11 +46,11 @@ public class CertificationConverter {
 		certification.setStatus(status);
 
 		User employee = new User();
-		employee.setId(13);
+		employee.setId(certificationDto.getEmployeeId());
 		certification.setEmployee(employee);
 
 		Certificate certificate = new Certificate();
-		certificate.setId(42);
+		certificate.setId(certificationDto.getCertificateId());
 		certification.setCertificate(certificate);
 
 		return certification;
@@ -58,22 +61,29 @@ public class CertificationConverter {
 
 		Certification certification = new Certification();
 
-		
 		certification.setDate(addCertificationDto.getDate());
 		certification.setValidity(true);
-		
+
 		Status status = new Status();
 		status.setId(1);
 		certification.setStatus(status);
-		
+
 		User employee = new User();
 		employee.setId(addCertificationDto.getEmployeeId());
 		certification.setEmployee(employee);
 
 		Certificate certificate = new Certificate();
 		certificate.setId(addCertificationDto.getCertificateId());
-		certification.setCertificate(certificate);		
+		certification.setCertificate(certificate);
 
 		return certification;
+	}
+
+	public static List<CertificationDto> toCertificationListDto(List<Certification> certifications) {
+		List<CertificationDto> certificationDto = new ArrayList<>();
+		for (Certification certification : certifications) {
+			certificationDto.add(toCertificationDto(certification));
+		}
+		return certificationDto;
 	}
 }

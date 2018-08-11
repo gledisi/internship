@@ -1,5 +1,8 @@
 package com.converter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.dto.StatusDto;
 import com.entity.Status;
 
@@ -20,6 +23,15 @@ public class StatusConverter {
 
 		return status;
 
+	}
+
+	public static List<StatusDto> toStatusListDto(List<Status> statusList) {
+		List<StatusDto> statusListDto = new ArrayList<>();
+
+		for (Status status : statusList) {
+			statusListDto.add(toStatusDto(status));
+		}
+		return statusListDto;
 	}
 
 }

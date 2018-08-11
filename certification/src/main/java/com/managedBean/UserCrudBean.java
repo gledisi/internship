@@ -8,6 +8,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.event.SelectEvent;
+
 import com.dto.UserDto;
 import com.services.UserService;
 import com.utility.Messages;
@@ -35,24 +37,24 @@ public class UserCrudBean implements Serializable {
 
 	public void refreshBean() {
 		this.user = new UserDto();
-		this.employeesOfManager = userService.getEmployeesOfManager(1);
+		this.employeesOfManager = userService.getEmployeesOfManager(userBean.getUser().getId());
 	}
 
 	public String addEmployee() {
 
-		user.setManagedBy(1);
+		user.setManagedBy(userBean.getUser().getId());
 
-		if (!userExists()) {
-			System.out.println(user.toString());
+		if (!userService.existUser(user.getEmail())) {
+
 			if (userService.add(user)) {
-				System.out.println("user u shtua");
+				Messages.addFlushMessage(Messages.bundle.getString("EMPLOYEE_ADDED"), "info");
 				refreshBean();
 			} else {
-				System.out.println("user nuk u shtua");
+				Messages.addMessage(Messages.bundle.getString("EMPLOYEE_NOT_ADDED"), "error");
 				return null;
 			}
 		} else {
-			System.out.println("useri ekziston!");
+			Messages.addMessage(Messages.bundle.getString("EMPLOYEE_EXIST"), "warn");
 			return null;
 		}
 
@@ -61,13 +63,14 @@ public class UserCrudBean implements Serializable {
 
 	public String editEmployee() {
 		UserDto userEdit = userService.getUserFromId(this.user.getId());
-		System.out.print(userEdit.getEmail());
-		boolean userExist = userExists();
+		boolean userExist = userService.existUser(user.getEmail());
+
 		if (!userExist || (userExist && userEdit.getEmail().equals(this.user.getEmail()))) {
 
 			if (userService.edit(user)) {
-				refreshBean();
-				Messages.addMessage(Messages.bundle.getString("EMPLOYEE_EDITED"), "info");
+
+				Messages.addFlushMessage(Messages.bundle.getString("EMPLOYEE_EDITED"), "info");
+				return "employees.xhtml?faces-redirect=true";
 			} else {
 				Messages.addMessage(Messages.bundle.getString("EMPLOYEE_NOT_EDITED"), "error");
 			}
@@ -115,10 +118,26 @@ public class UserCrudBean implements Serializable {
 		return null;
 	}
 
-	private boolean userExists() {
-		if (userService.getLoggedUser(this.user.getEmail()) != null)
-			return true;
-		return false;
+	public String loadUser() {
+		int id = user.getId();
+		if (id == 0) {
+			Messages.addMessage("Jepni nje id!", "warn");
+		} else {
+			UserDto user = userService.getUserFromId(id);
+			if (user == null) {
+				Messages.addMessage("Nuk ka punonjes!", "warn");
+			} else if (user.getRole().equals("manager") || user.getManagedBy() != userBean.getUser().getId()) {
+				Messages.addMessage("Nuk mund te editoni kete punonjes", "warn");
+			} else {
+				this.user = user;
+			}
+		}
+		return null;
+	}
+
+	public void onDoubleClick(final SelectEvent event) {
+		this.user = (UserDto) event.getObject();
+
 	}
 
 	// GETTERS AND SETTERS

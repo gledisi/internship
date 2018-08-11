@@ -1,12 +1,11 @@
 package com.managedBean;
 
-
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.view.ViewScoped;
+import javax.faces.bean.ViewScoped;
 
 import com.dto.StatusDto;
 import com.services.StatusService;
@@ -28,9 +27,14 @@ public class StatusBean {
 
 	private void refreshBean() {
 		this.statusDto = new StatusDto();
-		this.statusDtoList = statusService.getAllStatus();
+		this.statusDtoList = getAllStatus(statusDto.getStatus());
 	}
 
+	public List<StatusDto> getAllStatus(String currentStatus) {
+		return statusService.getOtherStatus(currentStatus);
+	}
+
+	// GETTTERS AND SETTERS
 
 	public StatusDto getStatusDto() {
 		return statusDto;
@@ -55,6 +59,5 @@ public class StatusBean {
 	public void setStatusService(StatusService statusService) {
 		this.statusService = statusService;
 	}
-
 
 }

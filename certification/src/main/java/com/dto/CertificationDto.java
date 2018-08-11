@@ -16,7 +16,7 @@ public class CertificationDto {
 	private String certificatetype;
 	
 	private int statusId;
-	private String Status;
+	private String status;
 	
 	private int points;
 	private Date date;
@@ -105,11 +105,11 @@ public class CertificationDto {
 	}
 
 	public String getStatus() {
-		return Status;
+		return status;
 	}
 
-	public void setStatus(String status) {
-		Status = status;
+	public void setStatus(String stat) {
+		status = stat;
 	}
 
 	public Date getDate() {

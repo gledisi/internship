@@ -6,20 +6,18 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.dao.CertificationDao;
 import com.entity.Certification;
 
 @Repository(value = "certificationDao")
 @Scope("singleton")
-@Component
 public class CertificationDaoImpl implements CertificationDao {
 
 	private static final Logger LOGGER = LogManager.getLogger(CertificationDaoImpl.class.getName());
@@ -27,7 +25,6 @@ public class CertificationDaoImpl implements CertificationDao {
 	@PersistenceContext
 	EntityManager entityManager;
 
-	@Transactional
 	public boolean add(Certification certification) {
 		try {
 			LOGGER.info("adding certification!");
@@ -42,7 +39,6 @@ public class CertificationDaoImpl implements CertificationDao {
 		}
 	}
 
-	@Transactional
 	public boolean edit(Certification certification) {
 		try {
 			LOGGER.info("editing certification!");
@@ -57,7 +53,6 @@ public class CertificationDaoImpl implements CertificationDao {
 		}
 	}
 
-	@Transactional
 	public boolean delete(int certificationId) {
 		try {
 			LOGGER.info("deleting certification!");
@@ -72,29 +67,91 @@ public class CertificationDaoImpl implements CertificationDao {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	@Transactional
-	public List<Certification> getCertificationByManager(int managerId) {
+	public List<Certification> getManagerCertifications(String description, String status, String employee,
+			int idManager) {
 
-		List<Certification> certification = new ArrayList<Certification>();
+		List<Certification> certification = new ArrayList<>();
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("Select certification  from Certification certification");
+		stringBuilder.append(" Where certification.validity=:validity");
+		stringBuilder.append(" And certification.employee.managedBy=:idManager");
+
+		if (status != null && !status.trim().isEmpty()) {
+			stringBuilder.append(" And certification.status.status=:status");
+		}
+		if (description != null && !description.trim().isEmpty()) {
+			stringBuilder.append(" And certification.certificate.description LIKE :description");
+			stringBuilder.append(" Or certification.certificate.name LIKE :description");
+			stringBuilder.append(" Or certification.certificate.type LIKE :description");
+		}
+		if (employee != null && !employee.trim().isEmpty()) {
+			stringBuilder.append(" And certification.employee.firstname  LIKE :employee");
+		}
 		try {
 			LOGGER.info("Retrieving  certifications!");
-			Query query = entityManager.createQuery("Select certification  from Certification certification,User user"
-					+ " Where certification.employee.id=user.id And certification.validity=:validity"
-					+ " And user.validity=:validity And user.managedBy=:managedBy");
-			query.setParameter("validity", true).setParameter("managedBy", managerId);
+			TypedQuery<Certification> query = entityManager.createQuery(stringBuilder.toString(), Certification.class);
+			query.setParameter("validity", true);
+			query.setParameter("idManager", idManager);
+
+			if (status != null && !status.trim().isEmpty()) {
+				query.setParameter("status", status);
+			}
+			if (description != null && !description.trim().isEmpty()) {
+				query.setParameter("description", "%" + description + "%");
+			}
+			if (employee != null && !employee.trim().isEmpty()) {
+				query.setParameter("employee", "%" + employee + "%");
+			}
 			certification = query.getResultList();
+
 			LOGGER.info("certifications Retrieved!");
-			return certification;
 		} catch (RuntimeException e) {
 			LOGGER.error("error Retrieving certification!Message: " + e.getMessage(), e);
-			return certification;
 		}
 
+		return certification;
+	}
+
+	public List<Certification> getEmployeeCertifications(String status, String description, int idEmployee) {
+		List<Certification> certification = new ArrayList<Certification>();
+
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("Select certification  from Certification certification");
+		stringBuilder.append(" Where certification.validity=:validity");
+		stringBuilder.append(" And certification.employee.id=:idEmployee");
+
+		if (status != null && !status.trim().isEmpty()) {
+			stringBuilder.append(" And certification.status=:status");
+		}
+		if (description != null && !description.trim().isEmpty()) {
+			stringBuilder.append(" And certification.certificate.description LIKE :description");
+			stringBuilder.append(" Or certification.certificate.name LIKE :description");
+			stringBuilder.append(" Or certification.certificate.type LIKE :description");
+		}
+
+		try {
+			LOGGER.info("Retrieving  certifications!");
+			TypedQuery<Certification> query = entityManager.createQuery(stringBuilder.toString(), Certification.class);
+			query.setParameter("validity", true);
+			query.setParameter("idEmployee", idEmployee);
+
+			if (status != null && !status.trim().isEmpty()) {
+				query.setParameter("status", status);
+			}
+			if (description != null && !description.trim().isEmpty()) {
+				query.setParameter("description", "%" + description + "%");
+			}
+
+			certification = query.getResultList();
+			LOGGER.info("certifications Retrieved!");
+		} catch (RuntimeException e) {
+			LOGGER.error("error Retrieving certification!Message: " + e.getMessage(), e);
+		}
+
+		return certification;
 	}
 
 	@SuppressWarnings("unchecked")
-	@Transactional
 	public List<Certification> getEmployeeCertifications(int employeeId) {
 		List<Certification> certification = new ArrayList<Certification>();
 

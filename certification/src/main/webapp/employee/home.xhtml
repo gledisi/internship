@@ -12,6 +12,7 @@
 
 <h:body>
 	<p:growl id="growl" life="7000" />
+	<ui:include name="header" src="sidebar.xhtml" />
 
 	<div id="right-panel" class="right-panel">
 
@@ -22,7 +23,7 @@
 		<!-- content-->
 		<div class="content mt-3">
 			<!-- tabela-->
-			<div class="col-lg-9">
+			<div class="col-lg-11">
 				<div class="card">
 					<div class="card-header">
 						<strong class="card-title">Certifications</strong>
@@ -30,7 +31,7 @@
 					<div class="card-body">
 						<h:form id="certificationForm">
 							<p:dataTable id="certificationTable" var="certification"
-								value="#{certificationBean.employeeCertifications}"
+								value="#{certificationBean.certifications}"
 								style="text-align:center" widgetVar="DTWVar" rows="5"
 								paginator="true"
 								paginatorTemplate="{PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
@@ -61,11 +62,12 @@
 								</p:column>
 
 								<p:column headerText="Actions" style="width:150px">
-									<p:commandButton icon="ui-icon-edit" ajax="true"
-										actionListener="#{certificationBean.set(certification)}"
+									<p:commandButton icon="fa fa-edit" ajax="true"
 										title="Update this certifaction" update="dialog"
 										oncomplete="PF('varDialog').show()">
-
+										<f:setPropertyActionListener
+											target="#{certificationBean.certificationDto}"
+											value="#{certification}" />
 									</p:commandButton>
 								</p:column>
 
@@ -81,28 +83,11 @@
 	<!-- updateDialog -->
 
 	<p:dialog id="dialog" widgetVar="varDialog" resizable="false"
-		width="600">
-        #{certificationBean.certificationDto.id}
+		header="Update Certification" modal="true">
 		<p:ajax event="close" update=":certificationForm:certificationTable" />
-		<p:panelGrid id="datatable" columns="2" columnClasses="label,value">
-			<p:outputLabel for="status" value="Status" />
-			<p:selectOneMenu id="status" name="status" style="width:180px"
-				value="#{certificationBean.certificationDto.statusId}"
-				required="true" requiredMessage="Zgjidhni certificaten!">
-
-				<f:selectItems value="#{statusBean.statusDtoList}" var="status"
-					itemValue="#{status.id}" itemLabel="#{status.status}" />
-			</p:selectOneMenu>
-			<p:outputLabel for="points" value="Points" />
-			<p:spinner id="points"
-				value="#{certificationBean.certificationDto.points}">
-
-			</p:spinner>
-		</p:panelGrid>
+		<ui:include src="updateCertification.xhtml" />
 	</p:dialog>
 	<!-- .updateDialog -->
-
-	<!-- Modal per editimin -->
 
 	<ui:include name="footer" src="/components/footer.xhtml" />
 

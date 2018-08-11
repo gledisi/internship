@@ -46,6 +46,34 @@
 								selection="#{certificationBean.certificationsSelected}">
 
 								<f:facet name="header">
+									<div class="form-group">
+										<div class="input form-group">
+											<h:inputText id="search"
+												value="#{certificationBean.description}"
+												pt:placeHolder="Search..." />
+											<h:selectOneMenu id="employee" name="employee"
+												style="width:180px"
+												value="#{certificationBean.employeeName}">
+												<f:selectItem itemLabel="Employee" itemValue="#{null}"
+													noSelectionOption="true" />
+												<f:selectItems value="#{userCrudBean.employeesOfManager}"
+													var="employee" itemValue="#{employee.firstname}"
+													itemLabel="#{employee.firstname}" />
+											</h:selectOneMenu>
+											<h:selectOneMenu id="status" name="status"
+												style="width:180px" value="#{certificationBean.status}">
+												<f:selectItem itemLabel="Status" itemValue="#{null}"
+													noSelectionOption="true" />
+												<f:selectItems value="#{statusBean.statusDtoList}"
+													var="stat" itemValue="#{stat.status}"
+													itemLabel="#{stat.status}" />
+											</h:selectOneMenu>
+											<p:commandButton title="Search" id="btnSearch"
+												icon="fa fa-search"
+												actionListener="#{certificationBean.search()}"
+												update=":emCertificateForm:emCertificateTable" />
+										</div>
+									</div>
 
 									<p:commandButton title="Delete certificates of employees"
 										id="deleteCertificate" style="float:right"
@@ -53,7 +81,7 @@
 										actionListener="#{certificationBean.deleteListCertifications()}"
 										disabled=" #" oncomplete="PF('DTWVar').filter()"
 										update=":emCertificateForm:emCertificateTable growl">
-										
+
 										<p:confirm header="Confirm" message="Are you sure ?"
 											icon="ui-icon-alert" />
 									</p:commandButton>

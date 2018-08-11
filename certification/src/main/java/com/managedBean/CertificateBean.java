@@ -6,7 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.view.ViewScoped;
+import javax.faces.bean.ViewScoped;
 
 import com.dto.CertificateDto;
 import com.services.CertificateService;

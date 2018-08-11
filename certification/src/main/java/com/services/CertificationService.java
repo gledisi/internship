@@ -16,7 +16,14 @@ public interface CertificationService {
 
 	public boolean deleteList(List<CertificationDto> certifiactions);
 
-	public List<CertificationDto> getCertificationOfManager(int managerId);
+	public boolean existCertificationOnAddedList(List<UserDto> users, int idCertificate);
+
+	public boolean existCertification(int idCertificate, int idUser);
+
+	public List<CertificationDto> getManagerCertifications(String description, String status, String employee,
+			int idManager);
+
+	public List<CertificationDto> getEmployeeCertifications(String status, String description, int idEmployee);
 
 	public List<CertificationDto> getEmployeeCertifications(int employeeId);
 

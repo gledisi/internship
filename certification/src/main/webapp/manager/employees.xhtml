@@ -31,14 +31,17 @@
 					</div>
 					<div class="card-body">
 						<h:form id="employeesForm">
-							<p:dataTable id="employeesTable" var="employee" style=" text-align: center;"
+							<p:dataTable id="employeesTable" var="employee"
+								style=" text-align: center;"
 								value="#{userCrudBean.employeesOfManager}" widgetVar="DTWVar"
 								rows="5" paginator="true"
 								paginatorTemplate="{PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
 								rowsPerPageTemplate="5,10,15" rowIndexVar="index"
 								rowKey="#{employee.id}"
 								selection="#{userCrudBean.selectedEmployees}">
-
+								<p:ajax event="rowDblselect"
+									listener="#{userCrudBean.onDoubleClick}"
+									update="employeeDialog" oncomplete="PF('editDialog').show()" />
 								<f:facet name="header">
 									<div class="col col-sm-3">
 										<h:inputText id="search" value="#" class="form-control"
@@ -69,11 +72,13 @@
 										id="addEmployee" action="addEmployee?faces-redirect=true"
 										value="Employee" style="float:right" icon="ui-icon-plus" />
 
-									<p:commandButton title="Add certification seletcted employees"
+									<p:commandButton
+										title="Add certification for selected employees"
 										id="certificate" value="Certifications" style="float:right"
 										proces="@this" icon="ui-icon-plus"
-										update=":employeesForm:employeesTable certificationDialog"
-										oncomplete="PF('cDialog').show()" />
+										update="certificationDialog"
+										actionListener="#{certificationBean.setMultipleAdd(true)}"
+										oncomplete="PF('addDialog').show()" />
 
 								</f:facet>
 
@@ -105,44 +110,44 @@
 
 								<p:column headerText="Actions" width="70px">
 
-									
-
-										<p:commandButton title="Add certification for this employee"
-											proces="@this" icon="ui-icon-plus"
-											update="certificationDialog"
-											oncomplete="PF('cDialog').show()">
-											<f:setPropertyActionListener
-												target="#{certificationBean.addCertification.employeeId}"
-												value="#{employee.id}" />
-										</p:commandButton>
 
 
-										<p:commandButton title="Edit this employee" proces="@this"
-											icon="ui-icon-pencil" update="certificationDialog"
-											oncomplete="PF('varDialog').show()">
-											<f:setPropertyActionListener target="#{userCrudBean.user}"
-												value="#{employee}" />
-										</p:commandButton>
+									<p:commandButton title="Add certification for this employee"
+										proces="@this" icon="ui-icon-plus"
+										actionListener="#{certificationBean.setMultipleAdd(false)}"
+										update="certificationDialog"
+										oncomplete="PF('addDialog').show()">
+										<f:setPropertyActionListener
+											target="#{certificationBean.addCertification.employeeId}"
+											value="#{employee.id}" />
+									</p:commandButton>
 
-										<p:commandButton icon="ui-icon-trash"
-											title="Delete this employee" update="growl employeesTable"
-											actionListener="#{userCrudBean.deleteEmployee(employee.id)}">
-											<p:confirm header="Confirm" message="Are you sure ?"
-												icon="ui-icon-alert" />
-										</p:commandButton>
 
-										<p:confirmDialog global="true" showEffect="fade"
-											hideEffect="fade">
+									<p:commandButton title="Edit this employee" proces="@this"
+										icon="ui-icon-pencil"
+										action="editEmployeePage.xhtml?faces-redirect=true&amp;includeViewParams=true">
+										<f:setPropertyActionListener target="#{userCrudBean.user.id}"
+											value="#{employee.id}" />
+									</p:commandButton>
 
-											<p:commandButton value="Yes" type="button"
-												styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-											<p:commandButton value="No" type="button"
-												styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-										</p:confirmDialog>
-									
+									<p:commandButton icon="ui-icon-trash"
+										title="Delete this employee" update="employeesTable growl"
+										actionListener="#{userCrudBean.deleteEmployee(employee.id)}">
+										<p:confirm header="Confirm" message="Are you sure ?"
+											icon="ui-icon-alert" />
+									</p:commandButton>
+
+									<p:confirmDialog global="true" showEffect="fade"
+										hideEffect="fade">
+
+										<p:commandButton value="Yes" type="button"
+											styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+										<p:commandButton value="No" type="button"
+											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+									</p:confirmDialog>
+
 
 								</p:column>
-
 							</p:dataTable>
 						</h:form>
 					</div>
@@ -153,8 +158,9 @@
 	<!-- .content -->
 
 	<!-- dialogForAddCertification -->
-	<p:dialog id="certificationDialog" widgetVar="cDialog"
-		resizable="false" modal="true" width="500" dynamic="true">
+	<p:dialog id="certificationDialog" widgetVar="addDialog"
+		resizable="false" modal="true" dynamic="true"
+		header="Add Certification">
 		<p:ajax event="close" update=":employeesForm:employeesTable" />
 		<ui:include src="addCertification.xhtml" />
 	</p:dialog>
@@ -162,8 +168,8 @@
 
 
 	<!-- dialogForEditEmployee -->
-	<p:dialog id="dialog" widgetVar="varDialog" resizable="false"
-		modal="true" width="500" dynamic="true">
+	<p:dialog id="employeeDialog" widgetVar="editDialog" resizable="false"
+		modal="true" width="500" dynamic="true" header="Edit Employee">
 		<p:ajax event="close" update=":employeesForm:employeesTable" />
 		<ui:include src="editEmployee.xhtml" />
 	</p:dialog>

@@ -6,6 +6,7 @@ public class UserDto {
 
 	private int id;
 	private int idRole;
+	private String role;
 	private String firstname;
 	private String lastname;
 	private Date birthday;
@@ -77,6 +78,12 @@ public class UserDto {
 	}
 	public void setValidity(boolean validity) {
 		this.validity = validity;
+	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
 	}
 	
 	

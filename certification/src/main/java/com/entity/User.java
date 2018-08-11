@@ -57,8 +57,6 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
 	private Set<Certification> certifications = new HashSet<Certification>();
 
-	
-	
 	// GETTERS AND SETTERS
 
 	public Integer getManagedBy() {
@@ -77,12 +75,12 @@ public class User implements Serializable {
 		this.certificates = certificates;
 	}
 
-	public Set<Certification> getEmployeecertificates() {
+	public Set<Certification> getCertifications() {
 		return certifications;
 	}
 
-	public void setEmployeecertificates(Set<Certification> employeecertificates) {
-		this.certifications = employeecertificates;
+	public void setCertifications(Set<Certification> certifications) {
+		this.certifications = certifications;
 	}
 
 	public Integer getId() {

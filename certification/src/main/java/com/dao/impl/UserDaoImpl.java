@@ -9,16 +9,13 @@ import javax.persistence.PersistenceContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.dao.UserDao;
 import com.entity.User;
 
 @Repository(value = "userDao")
 @Scope("singleton")
-@Component
 public class UserDaoImpl implements UserDao {
 
 	private static final Logger LOGGER = LogManager.getLogger(UserDaoImpl.class.getName());
@@ -26,7 +23,6 @@ public class UserDaoImpl implements UserDao {
 	@PersistenceContext
 	EntityManager entityManager;
 
-	@Transactional
 	public boolean add(User user) {
 		try {
 			LOGGER.info("adding User!");
@@ -41,7 +37,6 @@ public class UserDaoImpl implements UserDao {
 		}
 	}
 
-	@Transactional
 	public boolean edit(User user) {
 		try {
 			LOGGER.info("editing user!");
@@ -56,13 +51,15 @@ public class UserDaoImpl implements UserDao {
 		}
 	}
 
-	@Transactional
 	public boolean delete(int userId) {
 		try {
 
-			LOGGER.info("deleting user!");
-			entityManager.createQuery("update User set validity=:validity where id=:id").setParameter("validity", false)
-					.setParameter("id", userId).executeUpdate();
+			User user = entityManager.find(User.class, userId);
+			LOGGER.info("deleting user!" + user.getFirstname() + "with id=" + user.getId());
+			user.setValidity(false);
+			user.getCertifications().stream().filter(certification -> certification.isValidity())
+					.forEach(certification -> certification.setValidity(false));
+			entityManager.merge(user);
 			LOGGER.info("user delete!");
 			return true;
 
@@ -72,23 +69,19 @@ public class UserDaoImpl implements UserDao {
 		}
 	}
 
-	@Transactional
 	public User getUserFromId(int userId) {
-		User user = null;
+		User user = new User();
 		try {
-			LOGGER.info("retrieving user by id!");
-			user = (User) entityManager.createQuery("select user from User user where user.id=:userId")
-					.setParameter("userId", userId).getSingleResult();
+			LOGGER.info("retrieving user by id!" + userId);
+			user = (User) entityManager.find(User.class, userId);
 			LOGGER.info("user by id retrieved!");
-			return user;
 
 		} catch (Exception e) {
 			LOGGER.error("error retrieving user by id !Message: " + e.getMessage(), e);
-			return null;
 		}
+		return user;
 	}
 
-	@Transactional
 	public User getLoggedUser(String email) {
 
 		User user = null;
@@ -108,23 +101,21 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Transactional
 	public List<User> getEmployeesOfManager(int idManager) {
 		List<User> users = new ArrayList<User>();
 		try {
 			LOGGER.info("retrieving users of manager!");
 			users = entityManager
 					.createQuery(
-							"Select user From User user Where user.managedBy = :idManager and user.validity!=:validity")
-					.setParameter("idManager", idManager).setParameter("validity", false).getResultList();
+							"Select user From User user Where user.managedBy = :idManager and user.validity=:validity")
+					.setParameter("idManager", idManager).setParameter("validity", true).getResultList();
 			LOGGER.info("user of manager retrieved!");
-			return users;
 		} catch (RuntimeException e) {
 
 			LOGGER.error("error retrieving user of manager !Message: " + e.getMessage(), e);
-			return users;
-		}
 
+		}
+		return users;
 	}
 
 }
