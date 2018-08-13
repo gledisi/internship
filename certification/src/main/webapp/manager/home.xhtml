@@ -11,8 +11,7 @@
 
 
 <h:body>
-	<p:growl id="growl" life="7000" />
-
+	<p:growl id="growl" life="4000" />
 	<ui:include name="header" src="/manager/managerSidebar.xhtml" />
 
 
@@ -37,6 +36,7 @@
 					<div class="card-body">
 						<h:form id="emCertificateForm">
 							<p:dataTable id="emCertificateTable" var="emCertificate"
+								styleClass="table table-striped table-bordered dataTable no-footer"
 								value="#{certificationBean.certifications}"
 								style="text-align:center" widgetVar="DTWVar" rows="5"
 								paginator="true"
@@ -76,10 +76,8 @@
 									</div>
 
 									<p:commandButton title="Delete certificates of employees"
-										id="deleteCertificate" style="float:right"
-										icon="ui-icon-trash"
+										id="deleteCertificate" style="float:right" icon="fa fa-trash"
 										actionListener="#{certificationBean.deleteListCertifications()}"
-										disabled=" #" oncomplete="PF('DTWVar').filter()"
 										update=":emCertificateForm:emCertificateTable growl">
 
 										<p:confirm header="Confirm" message="Are you sure ?"
@@ -95,10 +93,10 @@
 											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 									</p:confirmDialog>
 
-									<p:commandButton title="Add certificate for employee"
-										id="addCertificate" action="#" style="float:right"
-										icon="ui-icon-plus" />
-
+									<p:commandButton title="Add certification for this employee"
+										proces="@this" icon="fa fa-plus" update="certificationDialog"
+										oncomplete="PF('addDialog').show()" style="float:right">
+									</p:commandButton>
 
 								</f:facet>
 
@@ -132,9 +130,8 @@
 
 										<p:commandButton icon="ui-icon-trash"
 											title="Delete this certifacte"
-											update=":emCertificateForm:emCertificateTable growl"
-											oncomplete="PF('DTWVar').filter()"
-											actionListener="#{certificationBean.deleteCertification(emCertificate.id)}">
+											actionListener="#{certificationBean.deleteCertification(emCertificate.id)}"
+											update=":emCertificateForm:emCertificateTable growl">
 											<p:confirm header="Confirm" message="Are you sure ?"
 												icon="ui-icon-alert" />
 										</p:commandButton>
@@ -160,8 +157,12 @@
 		</div>
 		<!-- .content -->
 	</div>
-	<!-- Modal per editimin -->
-
+	<p:dialog id="certificationDialog" widgetVar="addDialog" height="240"
+		width="500" resizable="false" modal="true" dynamic="true"
+		header="Add Certification">
+		<p:ajax event="close" update=":emCertificateForm:emCertificateTable" />
+		<ui:include src="addCertificationDialog.xhtml" />
+	</p:dialog>
 	<ui:include name="footer" src="/components/footer.xhtml" />
 
 </h:body>

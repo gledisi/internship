@@ -49,7 +49,7 @@ public class CertificationServiceImpl implements CertificationService {
 	public boolean deleteList(List<CertificationDto> certifiactions) {
 		boolean control = false;
 		for (CertificationDto certificationDto : certifiactions) {
-			control = certificationDao.delete(certificationDto.getCertificateId());
+			control = certificationDao.delete(certificationDto.getId());
 		}
 
 		return control;

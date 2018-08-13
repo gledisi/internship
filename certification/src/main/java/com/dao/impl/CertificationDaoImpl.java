@@ -121,7 +121,7 @@ public class CertificationDaoImpl implements CertificationDao {
 		stringBuilder.append(" And certification.employee.id=:idEmployee");
 
 		if (status != null && !status.trim().isEmpty()) {
-			stringBuilder.append(" And certification.status=:status");
+			stringBuilder.append(" And certification.status.status=:status");
 		}
 		if (description != null && !description.trim().isEmpty()) {
 			stringBuilder.append(" And certification.certificate.description LIKE :description");

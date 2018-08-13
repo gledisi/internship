@@ -4,14 +4,17 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
 
 
 <ui:include name="header" src="/components/header.xhtml" />
 
 
 <h:body>
-	<p:growl id="growl" life="7000" />
+	<b:growl id="growl" globalOnly="true" placementFrom="bottom"
+		show-detail="true" show-summary="false" allowDismiss="true"
+		delay="10000" escape="true" />
+
 	<ui:include name="header" src="sidebar.xhtml" />
 
 	<div id="right-panel" class="right-panel">
@@ -30,12 +33,39 @@
 					</div>
 					<div class="card-body">
 						<h:form id="certificationForm">
+
+
 							<p:dataTable id="certificationTable" var="certification"
 								value="#{certificationBean.certifications}"
+								class="table table-striped table-bordered dataTable no-footer"
 								style="text-align:center" widgetVar="DTWVar" rows="5"
 								paginator="true"
 								paginatorTemplate="{PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
 								rowsPerPageTemplate="5,10,15" rowIndexVar="index">
+
+								<f:facet name="header">
+
+
+									<div class="input form-group">
+										<h:inputText id="search"
+											value="#{certificationBean.description}"
+											pt:placeHolder="Search..." />
+
+										<h:selectOneMenu id="status" name="status" style="width:180px"
+											value="#{certificationBean.status}">
+											<f:selectItem itemLabel="Status" itemValue="#{null}"
+												noSelectionOption="true" />
+											<f:selectItems value="#{statusBean.statusDtoList}" var="stat"
+												itemValue="#{stat.status}" itemLabel="#{stat.status}" />
+										</h:selectOneMenu>
+										<p:commandButton title="Search" id="btnSearch"
+											icon="fa fa-search"
+											actionListener="#{certificationBean.search()}"
+											update=":certificationForm:certificationTable" />
+										<b:button value="cart-plus (size lg)" iconAwesome="cart-plus"
+											look="success" size="lg" />
+									</div>
+								</f:facet>
 
 								<p:column style="width:30px" headerText="#">
 									<h:outputText value="#{index + 1}" />
@@ -69,14 +99,21 @@
 											target="#{certificationBean.certificationDto}"
 											value="#{certification}" />
 									</p:commandButton>
+									<p:commandButton icon="fa fa-search" ajax="true"
+										title="View Details of certification"
+										oncomplete="PF('viewDialog').show()">
+										<f:setPropertyActionListener
+											target="#{certificationBean.certificationDto}"
+											value="#{certification}" />
+									</p:commandButton>
 								</p:column>
-
 							</p:dataTable>
 						</h:form>
 					</div>
 				</div>
 			</div>
 		</div>
+
 	</div>
 	<!-- .content -->
 
@@ -88,6 +125,13 @@
 		<ui:include src="updateCertification.xhtml" />
 	</p:dialog>
 	<!-- .updateDialog -->
+	<!-- viewCertificateDialog -->
+
+	<p:dialog id="viewDialog" widgetVar="viewDialog" resizable="false"
+		header="Certificate Details" modal="true" width="450">
+		<ui:include src="certificationDetails.xhtml" />
+	</p:dialog>
+	<!-- .viewCertificateDialog -->
 
 	<ui:include name="footer" src="/components/footer.xhtml" />
 

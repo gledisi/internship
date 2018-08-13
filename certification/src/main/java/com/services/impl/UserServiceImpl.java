@@ -60,8 +60,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Transactional
-	public List<UserDto> getEmployeesOfManager(int idManager) {
-		return UserConverter.toUserListDto(userDao.getEmployeesOfManager(idManager));
+	public List<UserDto> getEmployeesOfManager(String inputSearch, int idManager) {
+		return UserConverter.toUserListDto(userDao.getEmployeesOfManager(inputSearch, idManager));
+	}
+
+	@Transactional
+	public boolean changePassword(int userId, String newPassword) {
+		return userDao.changePassword(userId, newPassword);
 	}
 
 	// GETTERS AND SETTERS

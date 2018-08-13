@@ -2,22 +2,30 @@ package com.dto;
 
 import java.util.Date;
 
-
 public class CertificationDto {
 
 	private int id;
-	
+
 	private int employeeId;
 	private String firstname;
 	private String lastname;
-	
+
 	private int certificateId;
 	private String certificatename;
 	private String certificatetype;
-	
+	private String certificateDescription;
+
+	public String getCertificateDescription() {
+		return certificateDescription;
+	}
+
+	public void setCertificateDescription(String certificateDescription) {
+		this.certificateDescription = certificateDescription;
+	}
+
 	private int statusId;
 	private String status;
-	
+
 	private int points;
 	private Date date;
 	private boolean validity;

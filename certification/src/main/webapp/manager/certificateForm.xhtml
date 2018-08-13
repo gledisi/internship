@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<h:body>
+	<p:growl id="growl" life="4000" />
+
+	<div class="row form-group">
+
+		<div class="col col-md-3">
+			<label for="name" class=" form-control-label">Name</label>
+		</div>
+		<div class="col-12 col-md-9">
+			<p:inputText id="name" class="form-control"
+				value="#{certificateBean.certificate.name}" pt:placeholder="ISO88"
+				required="true" requiredMessage="Name is required">
+			</p:inputText>
+		</div>
+	</div>
+
+	<div class="row form-group">
+		<div class="col col-md-3">
+			<label for="type" class="form-control-label">Type</label>
+		</div>
+		<div class="col-12 col-md-9">
+			<h:inputText id="type" value="#{certificateBean.certificate.type}"
+				class="form-control" pt:placeholder="JAVA" required="true"
+				requiredMessage="Type is required!">
+			</h:inputText>
+		</div>
+	</div>
+
+	<div class="row form-group">
+		<div class="col col-md-3">
+			<label for="desciption" class="form-control-label">Description</label>
+		</div>
+		<div class="col-12 col-md-9">
+			<h:inputTextarea id="desciption"
+				value="#{certificateBean.certificate.description}"
+				class="form-control" pt:placeholder="description" required="true"
+				requiredMessage="Description is required">
+			</h:inputTextarea>
+		</div>
+	</div>
+</h:body>
+
+</html>

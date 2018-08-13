@@ -14,10 +14,10 @@
 
 <h:body class="bg-dark">
 
-	
-      
 
-	
+
+
+
 	<div class="sufee-login d-flex align-content-center flex-wrap">
 		<div class="container">
 			<div class="login-content">
@@ -29,30 +29,34 @@
 				<p:messages id="messages" closable="true" />
 				<div class="login-form">
 					<h:form>
-						<div class="form-group">
-							<label>#{comp['LABEL_EMAIL']}</label>
-							<h:inputText class="form-control" id="email" name="email"
-								value="#{loginBean.email}"
-								pt:placeholder="psh. emermbiemer@gmail.com" />
+						<div class="row form-group">
+							<div class="col col-md-3">
+								<label for="password" class="form-control-label">Email</label>
+							</div>
+							<div class="col-12 col-md-8">
+								<h:inputText class="form-control" id="email" name="email"
+									value="#{loginBean.email}"
+									pt:placeholder="psh. emermbiemer@gmail.com" />
+							</div>
 						</div>
-						<div class="form-group">
-							<label>#{comp['LABEL_PASSWORD']}</label>
-							<h:inputSecret class="form-control" id="fjalekalimi"
-								name="password" value="#{loginBean.password}" type="password"
-								pt:placeholder="**********" />
+						<div class="row form-group">
+							<div class="col col-md-3">
+								<label for="password" class="form-control-label">Password</label>
+							</div>
+							<div class="col-12 col-md-8">
+								<h:inputSecret class="form-control" id="fjalekalimi"
+									name="password" value="#{loginBean.password}" type="password"
+									pt:placeholder="**********" />
+							</div>
 						</div>
-
-						<p:commandButton class="btn btn-success btn-flat m-b-30 m-t-30"
-							type="submit" value="#{comp['LOGIN_BUTTON']}" action="#{loginBean.logIn()}"
-							name="log_in" update="messages">
-						</p:commandButton>
-
-
-						<div class="register-link m-t-15 text-center">
-							<p>
-								Don't have account ?
-								<h:link outcome="sign-up" value="Sign Up Here" />
-							</p>
+						<div class="row form-group">
+						<div class="col col-md-3"></div>
+							<div class="col col-md-8">
+								<h:commandButton class="btn btn-success  " type="submit"
+									value="LOG IN" action="#{loginBean.logIn()}" name="log_in"
+									update="messages">
+								</h:commandButton>
+							</div>
 						</div>
 					</h:form>
 				</div>

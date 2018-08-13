@@ -1,15 +1,17 @@
 package com.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -31,10 +33,12 @@ public class Certificate implements Serializable {
 	@Column(columnDefinition = "TINYINT", length = 4)
 	private boolean validity;
 
-	@ElementCollection
 	@ManyToOne
 	@JoinColumn(name = "idManager", nullable = false)
 	private User manager;
+
+	@OneToMany(mappedBy = "certificate")
+	private Set<Certification> certifications = new HashSet<>();
 
 	// GETTERS AND SETTERS
 	public Integer getId() {
@@ -83,6 +87,14 @@ public class Certificate implements Serializable {
 
 	public void setValidity(boolean validity) {
 		this.validity = validity;
+	}
+
+	public Set<Certification> getCertifications() {
+		return certifications;
+	}
+
+	public void setCertifications(Set<Certification> certifications) {
+		this.certifications = certifications;
 	}
 
 }

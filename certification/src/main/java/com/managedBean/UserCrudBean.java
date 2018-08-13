@@ -8,8 +8,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.primefaces.event.SelectEvent;
 
+import com.dto.PasswordDto;
 import com.dto.UserDto;
 import com.services.UserService;
 import com.utility.Messages;
@@ -25,9 +27,12 @@ public class UserCrudBean implements Serializable {
 	@ManagedProperty(value = "#{userService}")
 	private UserService userService;
 
+	private PasswordDto passwordDto;
 	private UserDto user;
 	private List<UserDto> employeesOfManager;
 	private List<UserDto> selectedEmployees;
+
+	private String inputSearch;
 
 	@PostConstruct
 	public void init() {
@@ -36,8 +41,15 @@ public class UserCrudBean implements Serializable {
 	}
 
 	public void refreshBean() {
+		this.passwordDto = new PasswordDto();
 		this.user = new UserDto();
-		this.employeesOfManager = userService.getEmployeesOfManager(userBean.getUser().getId());
+		getEmployees();
+	}
+
+	public String getEmployees() {
+		this.employeesOfManager = userService.getEmployeesOfManager(inputSearch, userBean.getUser().getId());
+
+		return null;
 	}
 
 	public String addEmployee() {
@@ -140,6 +152,38 @@ public class UserCrudBean implements Serializable {
 
 	}
 
+	public String changePassword() {
+
+		StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+
+		String dbPassword = userBean.getUser().getPassword();
+		if (!passwordDto.getOldPassword().equals(passwordDto.getNewPassword())) {
+			if (passwordEncryptor.checkPassword(passwordDto.getOldPassword(), dbPassword)) {
+
+				if (passwordDto.getNewPassword().equals(passwordDto.getConfirmPassword())) {
+
+					String newPassword = passwordEncryptor.encryptPassword(passwordDto.getNewPassword());
+
+					if (userService.changePassword(userBean.getUser().getId(), newPassword)) {
+						userBean.getUser().setPassword(newPassword);
+						Messages.addMessage(Messages.bundle.getString("PASSWORD_CHANGED"), "info");
+						this.passwordDto = new PasswordDto();
+					} else {
+						Messages.addMessage(Messages.bundle.getString("PASSWORD_NOT_CHANGED"), "error");
+					}
+				} else {
+					Messages.addMessage(Messages.bundle.getString("INCORRECT_CONFIRM_PASSWORD"), "warn");
+				}
+			} else {
+				Messages.addMessage(Messages.bundle.getString("INCORRECT_OLD_PASSWORD"), "warn");
+			}
+		} else {
+			Messages.addMessage(Messages.bundle.getString("SAME_PASSWORD"), "info");
+		}
+
+		return null;
+	}
+
 	// GETTERS AND SETTERS
 
 	public List<UserDto> getSelectedEmployees() {
@@ -180,6 +224,22 @@ public class UserCrudBean implements Serializable {
 
 	public void setEmployeesOfManager(List<UserDto> employeesOfManager) {
 		this.employeesOfManager = employeesOfManager;
+	}
+
+	public String getInputSearch() {
+		return inputSearch;
+	}
+
+	public void setInputSearch(String inputSearch) {
+		this.inputSearch = inputSearch;
+	}
+
+	public PasswordDto getPasswordDto() {
+		return passwordDto;
+	}
+
+	public void setPasswordDto(PasswordDto passwordDto) {
+		this.passwordDto = passwordDto;
 	}
 
 }

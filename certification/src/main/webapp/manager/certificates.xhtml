@@ -35,6 +35,7 @@
 								update="certificatesTable" />
 							<p:dataTable id="certificatesTable" var="certificate"
 								value="#{certificateBean.certificates}" widgetVar="DTWVar"
+								styleClass="table table-striped table-bordered dataTable no-footer"
 								rows="5" paginator="true"
 								paginatorTemplate="{PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
 								rowsPerPageTemplate="5,10,15" rowIndexVar="index"
@@ -42,12 +43,20 @@
 								selection="#{certificateBean.certificatesSelected}">
 
 								<f:facet name="header">
-									<div class="col col-sm-3">
-										<h:inputText id="search" value="#" class="form-control"
-											pt:placeholder="Search...">
-										</h:inputText>
-									</div>
+									<div class="form-group">
+										<div class="input form-group">
 
+											<h:inputText id="search"
+												value="#{certificateBean.description}"
+												pt:placeholder="Search..."
+												onkeyup="if(event.keyCode==13)this.blur();"
+												onchange="document.getElementById('searchButton').click();">
+											</h:inputText>
+											<h:commandButton id="searchButton" value="search"
+												actionListener="#{certificateBean.getManagerCertificates()}" />
+
+										</div>
+									</div>
 
 									<p:commandButton title="Delete certificates" id="delete"
 										value="Certificate" style="float:right" icon="ui-icon-trash"
@@ -66,8 +75,10 @@
 											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 									</p:confirmDialog>
 									<p:commandButton title="Add certificate" id="addCertificate"
-										value="Certificate" style="float:right" icon="ui-icon-newwin"
-										onclick="PF('varDialog').show()" immediate="true" />
+										actionListener="#{certificateBean.refreshCertificate()}"
+										value="Certificate" style="float:right" icon="fa fa-plus"
+										oncomplete="PF('addDialog').show()">
+									</p:commandButton>
 
 
 								</f:facet>
@@ -93,9 +104,7 @@
 									<p:panelGrid>
 
 										<p:commandButton title="Edit this certificate" proces="@this"
-											icon="ui-icon-pencil" update="dialog"
-											actionListener="#{certificateBean.setEdit(true)}"
-											oncomplete="PF('varDialog').show()">
+											icon="ui-icon-pencil" oncomplete="PF('editDialog').show()">
 											<f:setPropertyActionListener
 												target="#{certificateBean.certificate}"
 												value="#{certificate}" />
@@ -132,12 +141,20 @@
 
 	<!-- addDialog -->
 
-	<p:dialog id="dialog" widgetVar="varDialog" resizable="false"
-		modal="true" width="500" dynamic="true">
+	<p:dialog id="dialogAdd" widgetVar="addDialog" resizable="false"
+		header="Add Certificate" modal="true" width="500" dynamic="true">
 		<p:ajax event="close" update=":certificatesForm:certificatesTable" />
 		<ui:include src="addCertificate.xhtml" />
 	</p:dialog>
 	<!-- .addDialog -->
+	<!-- editDialog -->
+
+	<p:dialog id="dialogEdit" widgetVar="editDialog" resizable="false"
+		header="Edit Certificate" modal="true" width="500" dynamic="true">
+		<p:ajax event="close" update=":certificatesForm:certificatesTable" />
+		<ui:include src="editCertificate.xhtml" />
+	</p:dialog>
+	<!-- .editDialog -->
 
 	<!-- /footer content -->
 

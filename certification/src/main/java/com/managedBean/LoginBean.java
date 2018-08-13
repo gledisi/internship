@@ -6,6 +6,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
+import org.jasypt.util.password.StrongPasswordEncryptor;
+
 import com.dto.UserDto;
 import com.services.UserService;
 import com.utility.Messages;
@@ -25,16 +27,18 @@ public class LoginBean implements Serializable {
 	private UserBean userBean;
 
 	public String logIn() {
-
+		StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
 		UserDto userDto = userService.getLoggedUser(email);
-		if (userDto != null) {
+		if (userDto != null && passwordEncryptor.checkPassword(password, userDto.getPassword())) {
 			userBean.setUser(userDto);
-			return "employee/home.xhtml?faces-redirect=true";
+			return userDto.getRole().toLowerCase() + "/home.xhtml?faces-redirect=true";
+
 		} else {
 			Messages.addMessage(Messages.bundle.getString("INCORRECT_DATA"), "error");
-			return null;
+
 		}
 
+		return null;
 	}
 
 	public String logOut() {

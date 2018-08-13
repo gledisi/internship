@@ -11,8 +11,7 @@
 
 <h:body class="nav-md">
 
-	<p:growl id="growl" life="6000" />
-
+	<p:growl id="growl" life="4000" />
 	<ui:include name="header" src="/manager/managerSidebar.xhtml" />
 	<div id="right-panel" class="right-panel">
 
@@ -34,6 +33,7 @@
 							<p:dataTable id="employeesTable" var="employee"
 								style=" text-align: center;"
 								value="#{userCrudBean.employeesOfManager}" widgetVar="DTWVar"
+								styleClass="table table-striped table-bordered dataTable no-footer"
 								rows="5" paginator="true"
 								paginatorTemplate="{PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
 								rowsPerPageTemplate="5,10,15" rowIndexVar="index"
@@ -43,12 +43,19 @@
 									listener="#{userCrudBean.onDoubleClick}"
 									update="employeeDialog" oncomplete="PF('editDialog').show()" />
 								<f:facet name="header">
-									<div class="col col-sm-3">
-										<h:inputText id="search" value="#" class="form-control"
-											pt:placeholder="Search...">
-										</h:inputText>
-									</div>
+									<div class="form-group">
+										<div class="input form-group">
 
+											<h:inputText id="search" value="#{userCrudBean.inputSearch}"
+												pt:placeholder="Search..."
+												onkeyup="if(event.keyCode==13)this.blur();"
+												onchange="document.getElementById('searchButton').click();">
+											</h:inputText>
+											<h:commandButton id="searchButton" value="search"
+												actionListener="#{userCrudBean.getEmployees()}" />
+
+										</div>
+									</div>
 
 									<p:commandButton title="Delete employees" id="delete"
 										value="Employee" style="float:right" icon="ui-icon-trash"
@@ -159,7 +166,7 @@
 
 	<!-- dialogForAddCertification -->
 	<p:dialog id="certificationDialog" widgetVar="addDialog"
-		resizable="false" modal="true" dynamic="true"
+		resizable="false" modal="true" dynamic="true" width="500"
 		header="Add Certification">
 		<p:ajax event="close" update=":employeesForm:employeesTable" />
 		<ui:include src="addCertification.xhtml" />

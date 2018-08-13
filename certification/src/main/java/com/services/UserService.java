@@ -16,9 +16,11 @@ public interface UserService {
 
 	public boolean existUser(String email);
 
+	public boolean changePassword(int userId, String newPassword);
+
 	public UserDto getUserFromId(int userId);
 
 	public UserDto getLoggedUser(String email);
 
-	public List<UserDto> getEmployeesOfManager(int idManager);
+	public List<UserDto> getEmployeesOfManager(String inputSearch, int idManager);
 }

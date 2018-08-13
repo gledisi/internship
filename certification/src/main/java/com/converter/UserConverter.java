@@ -3,6 +3,8 @@ package com.converter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jasypt.util.password.StrongPasswordEncryptor;
+
 import com.dto.UserDto;
 import com.entity.Role;
 import com.entity.User;
@@ -10,14 +12,16 @@ import com.entity.User;
 public class UserConverter {
 
 	public static User toUser(UserDto userDto) {
-		User user = new User();
 
+		StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+
+		User user = new User();
 		user.setFirstname(userDto.getFirstname());
 		user.setLastname(userDto.getLastname());
 		user.setBirthday(userDto.getBirthday());
 		user.setIdCard(userDto.getIdCard());
 		user.setEmail(userDto.getEmail());
-		user.setPassword(userDto.getPassword());
+		user.setPassword(passwordEncryptor.encryptPassword(userDto.getPassword()));
 		user.setManagedBy(userDto.getManagedBy());
 		user.setValidity(true);
 		Role role = new Role();

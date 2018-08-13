@@ -21,4 +21,8 @@ public interface CertificateService {
 	public List<CertificateDto> getCertificates(String description, int idManager);
 
 	public boolean existCertificate(String name);
+
+	public boolean canDeleteListCertificates(List<CertificateDto> certificates);
+
+	public boolean canDeleteCertificate(int idCertificate);
 }

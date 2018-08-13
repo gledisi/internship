@@ -35,12 +35,25 @@ public class CertificateBean implements Serializable {
 	}
 
 	private void refreshBean() {
-		certificate = new CertificateDto();
-		certificates = getAllCertificates();
+		this.certificate = new CertificateDto();
+		getManagerCertificates();
+	}
+
+	public void refreshCertificate() {
+		this.certificate = new CertificateDto();
+	}
+
+	public String getManagerCertificates() {
+		this.certificates = certificateService.getCertificates(description, userBean.getUser().getId());
+		return null;
+	}
+
+	public List<CertificateDto> getAllCertificates() {
+		return certificateService.getCertificates(description, userBean.getUser().getId());
 	}
 
 	public String addCertificate() {
-		certificate.setIdManager(1);
+		certificate.setIdManager(userBean.getUser().getId());
 		if (!certificateService.existCertificate(certificate.getName())) {
 			if (certificateService.add(certificate)) {
 				Messages.addMessage(Messages.bundle.getString("CERTIFICATE_ADDED"), "info");
@@ -57,7 +70,11 @@ public class CertificateBean implements Serializable {
 	}
 
 	public String editCertificate() {
-		if (!certificateService.existCertificate(certificate.getName())) {
+
+		boolean exist = certificateService.existCertificate(certificate.getName());
+		CertificateDto certificateDb = certificateService.getCertificateById(certificate.getId());
+
+		if (!exist || (exist && certificateDb.getName().equals(this.certificate.getName()))) {
 			if (certificateService.edit(certificate)) {
 				Messages.addMessage(Messages.bundle.getString("CERTIFICATE_EDIT"), "info");
 				refreshBean();
@@ -73,11 +90,15 @@ public class CertificateBean implements Serializable {
 
 	public String deleteCertificate(int idCertificate) {
 
-		if (certificateService.delete(idCertificate)) {
-			Messages.addMessage(Messages.bundle.getString("CERTIFICATE_DELETED"), "info");
-			refreshBean();
+		if (certificateService.canDeleteCertificate(idCertificate)) {
+			if (certificateService.delete(idCertificate)) {
+				Messages.addMessage(Messages.bundle.getString("CERTIFICATE_DELETED"), "info");
+				refreshBean();
+			} else {
+				Messages.addMessage(Messages.bundle.getString("CERTIFICATE_NOT_DELETED"), "error");
+			}
 		} else {
-			Messages.addMessage(Messages.bundle.getString("CERTIFICATE_NOT_DELETED"), "error");
+			Messages.addMessage(Messages.bundle.getString("CERTIFICATE_CANT_DELETED"), "warn");
 		}
 
 		return null;
@@ -85,27 +106,26 @@ public class CertificateBean implements Serializable {
 
 	public String deleteCertificatesSelected() {
 
-		if (certificateService.deleteList(getCertificatesSelected())) {
-			if (getCertificatesSelected().size() == 1) {
-				Messages.addMessage(Messages.bundle.getString("CERTIFICATE_DELETED"), "info");
+		if (certificateService.canDeleteListCertificates(getCertificatesSelected())) {
+			if (certificateService.deleteList(getCertificatesSelected())) {
+				if (getCertificatesSelected().size() == 1) {
+					Messages.addMessage(Messages.bundle.getString("CERTIFICATE_DELETED"), "info");
+				} else {
+					Messages.addMessage(Messages.bundle.getString("CERTIFICATES_DELETED"), "info");
+				}
+				refreshBean();
 			} else {
-				Messages.addMessage(Messages.bundle.getString("CERTIFICATES_DELETED"), "info");
+
+				if (getCertificatesSelected().size() == 0) {
+					Messages.addMessage(Messages.bundle.getString("CERTIFICATE_NOT_SELECTED"), "warn");
+				} else {
+					Messages.addMessage(Messages.bundle.getString("CERTIFICATE_NOT_DELETED"), "error");
+				}
 			}
-			refreshBean();
 		} else {
-
-			if (getCertificatesSelected().size() == 0) {
-				Messages.addMessage(Messages.bundle.getString("CERTIFICATE_NOT_SELECTED"), "warn");
-			} else {
-				Messages.addMessage(Messages.bundle.getString("CERTIFICATE_NOT_DELETED"), "error");
-			}
-
+			Messages.addMessage(Messages.bundle.getString("CERTIFICATES_CANT_DELETED"), "warn");
 		}
 		return null;
-	}
-
-	public List<CertificateDto> getAllCertificates() {
-		return certificateService.getCertificates(description, userBean.getUser().getId());
 	}
 
 	// GETTERS AND SETTERS

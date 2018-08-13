@@ -23,6 +23,7 @@ public class CertificationConverter {
 		certificationDto.setCertificateId(certification.getCertificate().getId());
 		certificationDto.setCertificatename(certification.getCertificate().getName());
 		certificationDto.setCertificatetype(certification.getCertificate().getType());
+		certificationDto.setCertificateDescription(certification.getCertificate().getDescription());
 		certificationDto.setStatusId(certification.getStatus().getId());
 		certificationDto.setStatus(certification.getStatus().getStatus());
 		certificationDto.setPoints(certification.getPoints());

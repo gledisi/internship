@@ -20,4 +20,11 @@
       </el-resolver> 
        
     </application>
+    
+    <factory>
+        <exception-handler-factory>
+            com.utility.GeneralExceptionFactory
+        </exception-handler-factory>
+    </factory>
+    
 </faces-config>

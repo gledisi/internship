@@ -44,7 +44,7 @@ public class CertificationBean implements Serializable {
 	}
 
 	public void refreshBean() {
-		this.multipleAdd=false;
+		this.multipleAdd = false;
 		this.addCertification = new AddCertificationDto();
 		this.certificationDto = new CertificationDto();
 		this.certifications = getAllCertifications();
@@ -141,7 +141,7 @@ public class CertificationBean implements Serializable {
 			} else {
 				Messages.addMessage(Messages.bundle.getString("CERTIFICATIONS_DELETED"), "info");
 			}
-
+			refreshBean();
 		} else {
 
 			if (getCertificationsSelected().size() == 0) {

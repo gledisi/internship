@@ -11,10 +11,12 @@ public interface UserDao {
 	public boolean edit(User user);
 
 	public boolean delete(int userId);
+	
+	public boolean changePassword(int userId, String newPassword);
 
 	public User getUserFromId(int userId);
 
 	public User getLoggedUser(String email);
 
-	public List<User> getEmployeesOfManager(int idManager);
+	public List<User> getEmployeesOfManager(String inputSearch, int idManager);
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -100,22 +101,47 @@ public class UserDaoImpl implements UserDao {
 
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<User> getEmployeesOfManager(int idManager) {
+	public List<User> getEmployeesOfManager(String inputSearch, int idManager) {
 		List<User> users = new ArrayList<User>();
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("Select user From User user Where  user.validity=:validity");
+		stringBuilder.append(" And user.managedBy = :idManager ");
+
+		if (inputSearch != null && !inputSearch.trim().isEmpty()) {
+			stringBuilder.append(" And user.firstname LIKE :inputSearch");
+		}
 		try {
-			LOGGER.info("retrieving users of manager!");
-			users = entityManager
-					.createQuery(
-							"Select user From User user Where user.managedBy = :idManager and user.validity=:validity")
-					.setParameter("idManager", idManager).setParameter("validity", true).getResultList();
-			LOGGER.info("user of manager retrieved!");
+			LOGGER.info("retrieving users of manager![Input Search=" + inputSearch + ";Id Manager=" + idManager + "]");
+			TypedQuery<User> query = entityManager.createQuery(stringBuilder.toString(), User.class);
+			query.setParameter("validity", true);
+			query.setParameter("idManager", idManager);
+
+			if (inputSearch != null && !inputSearch.trim().isEmpty()) {
+				query.setParameter("inputSearch", "%" + inputSearch + "%");
+			}
+
+			users = query.getResultList();
+			LOGGER.info("user of manager retrieved!" + users);
 		} catch (RuntimeException e) {
 
 			LOGGER.error("error retrieving user of manager !Message: " + e.getMessage(), e);
 
 		}
 		return users;
+	}
+
+	public boolean changePassword(int userId, String newPassword) {
+		try {
+			LOGGER.info("Changin password for user with id[" + userId + "]");
+			entityManager.createQuery("update User  set password =:password where id=:userId")
+					.setParameter("password", newPassword).setParameter("userId", userId).executeUpdate();
+			LOGGER.info("Password changed!");
+			return true;
+		} catch (Exception e) {
+			LOGGER.error("Password failed to change! Message " + e.getMessage());
+			return false;
+
+		}
 	}
 
 }

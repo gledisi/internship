@@ -108,7 +108,7 @@ public class CertificateDaoImpl implements CertificateDao {
 		if (description != null && !description.trim().isEmpty()) {
 			queryBuilder.append(" And certificate.description LIKE :description");
 			queryBuilder.append(" Or certificate.type LIKE :description");
-			queryBuilder.append(" And certificate.name LIKE :description");
+			queryBuilder.append(" Or certificate.name LIKE :description");
 		}
 
 		try {
@@ -117,7 +117,7 @@ public class CertificateDaoImpl implements CertificateDao {
 			query.setParameter("validity", true);
 			query.setParameter("idManager", idManager);
 			if (description != null && !description.trim().isEmpty()) {
-				query.setParameter("description", description);
+				query.setParameter("description", "%" + description + "%");
 			}
 			certificates = query.getResultList();
 			LOGGER.info("Certificates of manager retrieved!");

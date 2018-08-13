@@ -12,10 +12,13 @@
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
 
 	<!-- Activates various annotations to be detected in bean classes e.g: @Autowired -->
-	<context:component-scan base-package="com"></context:component-scan>	
+	<context:component-scan base-package="com"></context:component-scan>
 
+	<import resource="database.xml" />
+	
 	<context:annotation-config />
-	<bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
+	<bean
+		class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
 
 
 </beans>

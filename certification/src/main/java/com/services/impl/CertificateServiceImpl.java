@@ -63,4 +63,21 @@ public class CertificateServiceImpl implements CertificateService {
 	public boolean existCertificate(String name) {
 		return getCertificateByName(name) != null;
 	}
+
+	@Transactional
+	public boolean canDeleteCertificate(int idCertificate) {
+		return certificateDao.getCertificateById(idCertificate).getCertifications().isEmpty();
+	}
+
+	@Transactional
+	public boolean canDeleteListCertificates(List<CertificateDto> certificates) {
+		boolean canDelete = true;
+		for (CertificateDto certificate : certificates) {
+			if (!canDeleteCertificate(certificate.getId())) {
+				canDelete = false;
+				break;
+			}
+		}
+		return canDelete;
+	}
 }
