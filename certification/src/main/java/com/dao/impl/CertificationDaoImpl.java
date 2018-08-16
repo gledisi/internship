@@ -26,10 +26,13 @@ public class CertificationDaoImpl implements CertificationDao {
 	EntityManager entityManager;
 
 	public boolean add(Certification certification) {
+
 		try {
-			LOGGER.info("adding certification!");
+			LOGGER.debug(
+					"Manager {} adding certification {} for employee {}!" + certification.getCertificate().getName(),
+					certification.getEmployee().getFirstname());
 			entityManager.persist(certification);
-			LOGGER.info("certification added!");
+			LOGGER.debug("certification added successfully!");
 			return true;
 
 		} catch (RuntimeException e) {
@@ -41,9 +44,11 @@ public class CertificationDaoImpl implements CertificationDao {
 
 	public boolean edit(Certification certification) {
 		try {
-			LOGGER.info("editing certification!");
+			LOGGER.debug(
+					"Manager {} editing certification {} for employee {}!" + certification.getCertificate().getName(),
+					certification.getEmployee().getFirstname());
 			entityManager.merge(certification);
-			LOGGER.info("certification edit!");
+			LOGGER.debug("certification edit successfully!");
 			return true;
 
 		} catch (RuntimeException e) {
@@ -55,10 +60,14 @@ public class CertificationDaoImpl implements CertificationDao {
 
 	public boolean delete(int certificationId) {
 		try {
-			LOGGER.info("deleting certification!");
-			entityManager.createQuery("update Certification set validity=:validity where id=:id")
-					.setParameter("validity", false).setParameter("id", certificationId).executeUpdate();
-			LOGGER.info("certification delete!");
+			Certification certification = entityManager.find(Certification.class, certificationId);
+			LOGGER.debug(
+					"Manager {} deleting certification {} of employee {}!"
+							+ certification.getCertificate().getManager().getFirstname(),
+					certification.getCertificate().getName(), certification.getEmployee().getFirstname());
+			certification.setValidity(false);
+			entityManager.merge(certification);
+			LOGGER.debug("certification deleted!");
 			return true;
 
 		} catch (Exception e) {
@@ -81,14 +90,12 @@ public class CertificationDaoImpl implements CertificationDao {
 		}
 		if (description != null && !description.trim().isEmpty()) {
 			stringBuilder.append(" And certification.certificate.description LIKE :description");
-			stringBuilder.append(" Or certification.certificate.name LIKE :description");
-			stringBuilder.append(" Or certification.certificate.type LIKE :description");
 		}
 		if (employee != null && !employee.trim().isEmpty()) {
 			stringBuilder.append(" And certification.employee.firstname  LIKE :employee");
 		}
 		try {
-			LOGGER.info("Retrieving  certifications!");
+			LOGGER.debug("Retrieving  certifications!");
 			TypedQuery<Certification> query = entityManager.createQuery(stringBuilder.toString(), Certification.class);
 			query.setParameter("validity", true);
 			query.setParameter("idManager", idManager);
@@ -104,7 +111,7 @@ public class CertificationDaoImpl implements CertificationDao {
 			}
 			certification = query.getResultList();
 
-			LOGGER.info("certifications Retrieved!");
+			LOGGER.debug("certifications Retrieved successfully!");
 		} catch (RuntimeException e) {
 			LOGGER.error("error Retrieving certification!Message: " + e.getMessage(), e);
 		}
@@ -125,12 +132,10 @@ public class CertificationDaoImpl implements CertificationDao {
 		}
 		if (description != null && !description.trim().isEmpty()) {
 			stringBuilder.append(" And certification.certificate.description LIKE :description");
-			stringBuilder.append(" Or certification.certificate.name LIKE :description");
-			stringBuilder.append(" Or certification.certificate.type LIKE :description");
 		}
 
 		try {
-			LOGGER.info("Retrieving  certifications!");
+			LOGGER.debug("Retrieving  certifications!");
 			TypedQuery<Certification> query = entityManager.createQuery(stringBuilder.toString(), Certification.class);
 			query.setParameter("validity", true);
 			query.setParameter("idEmployee", idEmployee);
@@ -143,7 +148,7 @@ public class CertificationDaoImpl implements CertificationDao {
 			}
 
 			certification = query.getResultList();
-			LOGGER.info("certifications Retrieved!");
+			LOGGER.debug("certifications Retrieved successfully!");
 		} catch (RuntimeException e) {
 			LOGGER.error("error Retrieving certification!Message: " + e.getMessage(), e);
 		}
@@ -156,12 +161,12 @@ public class CertificationDaoImpl implements CertificationDao {
 		List<Certification> certification = new ArrayList<Certification>();
 
 		try {
-			LOGGER.info("Retrieving  certifications of employee!");
+			LOGGER.debug("Retrieving  certifications of employee!");
 			Query query = entityManager.createQuery("Select certification  from Certification certification"
 					+ " Where certification.employee.id=:employeeId And certification.validity=:validity");
 			query.setParameter("validity", true).setParameter("employeeId", employeeId);
 			certification = query.getResultList();
-			LOGGER.info("certifications of employee Retrieved!");
+			LOGGER.debug("certifications of employee Retrieved successfully!");
 			return certification;
 		} catch (RuntimeException e) {
 			LOGGER.error("error Retrievingof employee certification!Message: " + e.getMessage(), e);

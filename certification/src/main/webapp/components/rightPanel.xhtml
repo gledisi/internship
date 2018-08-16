@@ -26,13 +26,12 @@
 			</a>
 
 			<div class="user-menu dropdown-menu">
-				<i class="fa fa-key"></i>
-				<p:commandButton value="Password"
-					oncomplete="PF('passwordDialog').show()">
-				</p:commandButton>
 				<h:form>
+					<h:commandLink action="myProfile.xhtml?faces-redirect=true">
+						<i class="menu-icon fa fa-user"></i> My Profile
+					</h:commandLink><br/>
 					<h:commandLink action="#{loginBean.logOut()}">
-						<i class="fa fa-sign-out"></i> Log out</h:commandLink>
+						<i class="menu-icon fa fa-sign-out"></i> Log out</h:commandLink>
 				</h:form>
 			</div>
 
@@ -42,11 +41,6 @@
 
 </header>
 <h:body>
-
-	<p:dialog id="dialogPass" widgetVar="passwordDialog" resizable="false"
-		header="Change Password" modal="true" width="500" dynamic="true">
-		<ui:include src="ChangePassword.xhtml" />
-	</p:dialog>
 
 </h:body>
 

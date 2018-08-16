@@ -18,125 +18,116 @@
 
 		<ui:include name="header" src="/components/rightPanel.xhtml" />
 
-		<div class="content mt-3">
-
-			<!-- forma-->
-
+		<div class="col-lg-2" />
+		<div class="content mt-2">
 			<!-- tabela-->
 
-			<div class="col-lg-12">
-				<div class="card">
-					<div class="card-header">
-						<strong class="card-title">Certificate's </strong>
-					</div>
-					<div class="card-body">
-						<h:form id="certificatesForm">
-							<p:remoteCommand name="updateTable" process="@this"
-								update="certificatesTable" />
-							<p:dataTable id="certificatesTable" var="certificate"
-								value="#{certificateBean.certificates}" widgetVar="DTWVar"
-								styleClass="table table-striped table-bordered dataTable no-footer"
-								rows="5" paginator="true"
-								paginatorTemplate="{PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
-								rowsPerPageTemplate="5,10,15" rowIndexVar="index"
-								rowKey="#{certificate.id}"
-								selection="#{certificateBean.certificatesSelected}">
+			<div class="col-lg-1 "></div>
+			<div class="col-lg-10 ">
+				<h:form id="certificatesForm">
+					<p:dataTable id="certificatesTable" var="certificate"
+						style="text-align:center" value="#{certificateBean.certificates}"
+						widgetVar="DTWVar"
+						styleClass="table table-striped table-bordered dataTable no-footer"
+						rows="5" paginator="true"
+						paginatorTemplate="{PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15" rowIndexVar="index"
+						rowKey="#{certificate.id}"
+						selection="#{certificateBean.certificatesSelected}">
 
-								<f:facet name="header">
-									<div class="form-group">
-										<div class="input form-group">
+						<f:facet name="header">
+							<div class="form-group">
+								<div class="input form-group">
 
-											<h:inputText id="search"
-												value="#{certificateBean.description}"
-												pt:placeholder="Search..."
-												onkeyup="if(event.keyCode==13)this.blur();"
-												onchange="document.getElementById('searchButton').click();">
-											</h:inputText>
-											<h:commandButton id="searchButton" value="search"
-												actionListener="#{certificateBean.getManagerCertificates()}" />
+									<h:inputText id="search" value="#{certificateBean.description}"
+										pt:placeholder="Search..."
+										onkeyup="if(event.keyCode==13)this.blur();"
+										onchange="document.getElementById('searchButton').click();">
+									</h:inputText>
+									<h:commandButton id="searchButton" value="search"
+										actionListener="#{certificateBean.getManagerCertificates()}" />
 
-										</div>
-									</div>
+								</div>
+							</div>
 
-									<p:commandButton title="Delete certificates" id="delete"
-										value="Certificate" style="float:right" icon="ui-icon-trash"
-										actionListener="#{certificateBean.deleteCertificatesSelected()}"
-										update=":certificatesForm:certificatesTable growl">
-										<p:confirm header="Confirm" message="Are you sure ?"
-											icon="ui-icon-alert" />
-									</p:commandButton>
+							<p:commandButton title="Delete certificates" id="delete"
+								value="Certificate" style="float:right" icon="ui-icon-trash"
+								actionListener="#{certificateBean.deleteCertificatesSelected()}"
+								update=":certificatesForm:certificatesTable growl">
+								<p:confirm header="Confirm" message="Are you sure ?"
+									icon="ui-icon-alert" />
+							</p:commandButton>
 
-									<p:confirmDialog global="true" showEffect="fade"
-										hideEffect="fade">
+							<p:confirmDialog global="true" showEffect="fade"
+								hideEffect="fade">
 
-										<p:commandButton value="Yes" type="button"
-											styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-										<p:commandButton value="No" type="button"
-											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-									</p:confirmDialog>
-									<p:commandButton title="Add certificate" id="addCertificate"
-										actionListener="#{certificateBean.refreshCertificate()}"
-										value="Certificate" style="float:right" icon="fa fa-plus"
-										oncomplete="PF('addDialog').show()">
-									</p:commandButton>
+								<p:commandButton value="Yes" type="button"
+									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="No" type="button"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</p:confirmDialog>
+							<p:commandButton title="Add certificate" id="addCertificate"
+								actionListener="#{certificateBean.refreshCertificate()}"
+								value="Certificate" style="float:right" icon="fa fa-plus"
+								oncomplete="PF('addDialog').show()">
+							</p:commandButton>
 
 
-								</f:facet>
+						</f:facet>
 
 
-								<p:column selectionMode="multiple"
-									style="width:20px;text-align:center" />
+						<p:column selectionMode="multiple"
+							style="width:20px;text-align:center" />
 
-								<p:column style="width:30px" headerText="#">
-									<h:outputText value="#{index + 1}" />
-								</p:column>
+						<p:column style="width:30px" headerText="#">
+							<h:outputText value="#{index + 1}" />
+						</p:column>
 
-								<p:column headerText="Name">
-									<h:outputText value="#{certificate.name}" />
-								</p:column>
+						<p:column headerText="Name">
+							<h:outputText value="#{certificate.name}" />
+						</p:column>
 
-								<p:column headerText="Type">
-									<h:outputText value="#{certificate.type}" />
-								</p:column>
+						<p:column headerText="Type">
+							<h:outputText value="#{certificate.type}" />
+						</p:column>
 
-								<p:column headerText="Actions">
+						<p:column headerText="Actions">
 
-									<p:panelGrid>
+							<p:panelGrid>
 
-										<p:commandButton title="Edit this certificate" proces="@this"
-											icon="ui-icon-pencil" oncomplete="PF('editDialog').show()">
-											<f:setPropertyActionListener
-												target="#{certificateBean.certificate}"
-												value="#{certificate}" />
-										</p:commandButton>
+								<p:commandButton title="Edit this certificate" proces="@this"
+									update="dialogEdit" icon="ui-icon-pencil"
+									oncomplete="PF('editDialog').show()">
+									<f:setPropertyActionListener
+										target="#{certificateBean.certificate}" value="#{certificate}" />
+								</p:commandButton>
 
-										<p:commandButton icon="ui-icon-trash"
-											title="Delete this certificate"
-											update="growl certificatesTable"
-											actionListener="#{certificateBean.deleteCertificate(certificate.id)}">
-											<p:confirm header="Confirm" message="Are you sure ?"
-												icon="ui-icon-alert" />
-										</p:commandButton>
+								<p:commandButton icon="ui-icon-trash"
+									title="Delete this certificate"
+									update="growl certificatesTable"
+									actionListener="#{certificateBean.deleteCertificate(certificate.id)}">
+									<p:confirm header="Confirm" message="Are you sure ?"
+										icon="ui-icon-alert" />
+								</p:commandButton>
 
-										<p:confirmDialog global="true" showEffect="fade"
-											hideEffect="fade">
+								<p:confirmDialog global="true" showEffect="fade"
+									hideEffect="fade">
 
-											<p:commandButton value="Yes" type="button"
-												styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-											<p:commandButton value="No" type="button"
-												styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-										</p:confirmDialog>
-									</p:panelGrid>
+									<p:commandButton value="Yes" type="button"
+										styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+									<p:commandButton value="No" type="button"
+										styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+								</p:confirmDialog>
+							</p:panelGrid>
 
-								</p:column>
+						</p:column>
 
-							</p:dataTable>
-						</h:form>
-					</div>
-				</div>
+					</p:dataTable>
+				</h:form>
 			</div>
 		</div>
 	</div>
+
 	<!-- .content -->
 
 	<!-- addDialog -->

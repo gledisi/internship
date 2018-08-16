@@ -74,17 +74,20 @@ public class CertificateBean implements Serializable {
 		boolean exist = certificateService.existCertificate(certificate.getName());
 		CertificateDto certificateDb = certificateService.getCertificateById(certificate.getId());
 
-		if (!exist || (exist && certificateDb.getName().equals(this.certificate.getName()))) {
-			if (certificateService.edit(certificate)) {
-				Messages.addMessage(Messages.bundle.getString("CERTIFICATE_EDIT"), "info");
-				refreshBean();
-			} else {
-				Messages.addMessage(Messages.bundle.getString("CERTIFICATE_NOT_EDIT"), "error");
-			}
+		if (!this.certificate.equals(certificateDb)) {
+			if (!exist || (exist && certificateDb.getName().equals(this.certificate.getName()))) {
+				if (certificateService.edit(certificate)) {
+					Messages.addMessage(Messages.bundle.getString("CERTIFICATE_EDIT"), "info");
+					refreshBean();
+				} else {
+					Messages.addMessage(Messages.bundle.getString("CERTIFICATE_NOT_EDIT"), "error");
+				}
 
-		} else {
-			Messages.addMessage(Messages.bundle.getString("CERTIFICATE_EXIST"), "warn");
+			} else {
+				Messages.addMessage(Messages.bundle.getString("CERTIFICATE_EXIST"), "warn");
+			}
 		}
+		
 		return null;
 	}
 

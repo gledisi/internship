@@ -14,7 +14,9 @@ public interface UserService {
 
 	public boolean deleteList(List<UserDto> employees);
 
-	public boolean existUser(String email);
+	public boolean existUserEmail(String email);
+	
+	public boolean existUserCardId(String idCard);
 
 	public boolean changePassword(int userId, String newPassword);
 

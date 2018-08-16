@@ -9,111 +9,80 @@
 
 
 <h:body>
-	<p:growl id="hall" life="2000" />
-
-
-
+	<p:growl id="growl" life="2000" />
 
 	<!-- content-->
 	<div class="content mt-2">
 		<div class="row">
-			<!-- forma1-->
-			<div class="col-lg-6">
-				<div class="card">
-					<div class="card-header">
-						<strong class="card-title"></strong>
-					</div>
-					<div class="card-body">
-						<!-- Credit Card -->
-						<div id="pay-invoice">
-							<h:form>
-								<div class="card-body">
-									<div class="card-title">
-										<h3 class="text-center">Edit Profile</h3>
-									</div>
-
-
-									<div class="form-group">
-										<label for="name" class="control-label mb-1">Name</label>
-										<h:inputText id="name" class="form-control"
-											value="#{userBean.user.name}">
-										</h:inputText>
-									</div>
-									<div class="form-group has-success">
-										<label for="surname" class="control-label mb-1">Surname</label>
-										<h:inputText id="surname" class="form-control"
-											value="#{userBean.user.surname}" />
-									</div>
-									<div class="form-group">
-										<label for="email" class="control-label mb-1">Email</label>
-										<h:inputText id="email" class="form-control"
-											value="#{userBean.user.email}" required="true"
-											requiredMessage="Emaili s'mund te jete bosh!"
-											validatorMessage="Emaili duhet te jete i formes ...@..." >
-											<f:validateRegex pattern="(.+@.+\.[a-zA-Z]+)?" />
-											<p:ajax execute="email" />
-											</h:inputText>
-									</div>
-
-								</div>
-								<div>
-									<h:commandButton id="save" type="submit"
-										action="#{userCrudBean.editUser()}"
-										class="btn btn-lg btn-info btn-block" value="Save">
-									</h:commandButton>
-								</div>
-							</h:form>
-						</div>
-					</div>
-				</div>
-			</div>
 			<!-- forma2-->
-			<div class="col-lg-6">
-				<div class="card">
-					<div class="card-header">
-						<strong class="card-title"></strong>
-					</div>
-					<div class="card-body">
-						<!-- Credit Card -->
-						<div id="pay-invoice">
-							<h:form>
-								<div class="card-body">
-									<div class="card-title">
-										<h3 class="text-center">Change password</h3>
-									</div>
+			<div class="col-lg-2 "></div>
+			<div class="col-lg-6 ">
+				<h:form id="formProfile">
+					<div class="card">
 
+						<div class="card-body card-block">
 
-									<div class="form-group">
-										<label for="name" class="control-label mb-1">Old
-											Password</label>
-										<h:inputSecret id="name" class="form-control"
-											value="#{userCrudBean.user.password}">
-										</h:inputSecret>
-									</div>
-									<div class="form-group has-success">
-										<label for="surname" class="control-label mb-1">New
-											Password</label>
-										<h:inputSecret id="surname" class="form-control"
-											value="#{userCrudBean.newPassword}" />
-									</div>
-									<div class="form-group">
-										<label for="email" class="control-label mb-1">Confirm
-											Password</label>
-										<h:inputSecret id="email" class="form-control"
-											value="#{userCrudBean.confirmPassword}" />
-									</div>
-
+							<div class="row form-group">
+								<div class="col col-md-4">
+									<label for="oldPassword" class="form-control-label">Password</label>
 								</div>
-								<div>
-									<h:commandButton id="save" type="submit" update="growl"
-										action="#{userCrudBean.changePassword()}"
-										class="btn btn-lg btn-info btn-block" value="Save">
-									</h:commandButton>
+								<div class="col-12 col-md-6">
+									<h:inputSecret id="password" class="form-control"
+										value="#{employeeManagementBean.passwordDto.oldPassword}"
+										required="true"
+										requiredMessage="Passwordi nuk mund te lihet bosh"
+										validatorMessage="Passwordi duhet te kete te pakten 6 karaktere , nje shkronje , nje numer dhe nje karakter special">
+										<f:validateRegex
+											pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{6,20})" />
+									</h:inputSecret>
 								</div>
-							</h:form>
+							</div>
+
+							<div class="row form-group">
+								<div class="col col-md-4">
+									<label for="password" class="form-control-label">New
+										Password</label>
+								</div>
+								<div class="col-12 col-md-6">
+									<h:inputSecret id="newpassword" class="form-control"
+										value="#{employeeManagementBean.passwordDto.newPassword}"
+										required="true"
+										requiredMessage="Passwordi nuk mund te lihet bosh"
+										validatorMessage="Passwordi duhet te kete te pakten 6 karaktere , nje shkronje , nje numer dhe nje karakter special">
+										<f:validateRegex
+											pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{6,20})" />
+									</h:inputSecret>
+								</div>
+							</div>
+
+							<div class="row form-group">
+								<div class="col col-md-4">
+									<label for="password" class="form-control-label">Confirm
+										Password</label>
+								</div>
+								<div class="col-12 col-md-6">
+									<h:inputSecret id="confirmPassword" class="form-control"
+										value="#{employeeManagementBean.passwordDto.confirmPassword}"
+										required="true"
+										requiredMessage="Passwordi nuk mund te lihet bosh"
+										validatorMessage="Passwordi duhet te kete te pakten 6 karaktere , nje shkronje , nje numer dhe nje karakter special">
+										<f:validateRegex
+											pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{6,20})" />
+									</h:inputSecret>
+								</div>
+							</div>
+
+						</div>
+						<div class="card-footer">
+							<div class="offset-md-3 col-md-6">
+								<h:commandButton class="btn btn-primary btn-lg btn-block"
+									update=":formPrfile passwordGrowl"
+									actionListener="#{employeeManagementBean.changePassword()}"
+									value="Change Password" />
+							</div>
 						</div>
 					</div>
-				</div>
+				</h:form>
 			</div>
 
 		</div>

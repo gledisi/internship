@@ -39,14 +39,14 @@ public class StatusDaoImpl implements StatusDao {
 		}
 
 		try {
-			LOGGER.info("retrieving list of statuses");
+			LOGGER.debug("retrieving list of statuses");
 			TypedQuery<Status> query = entityManager.createQuery(stringBuilder.toString(), Status.class);
 			query.setParameter("validity", true);
 			if (currentStatus != null && !currentStatus.trim().isEmpty()) {
 				query.setParameter("currentStatus", currentStatus);
 			}
 			status = query.getResultList();
-			LOGGER.info("list of status retrieved succesfully " + "size of list[" + status.size() + "]");
+			LOGGER.debug("list of status retrieved succesfully " + "size of list[" + status.size() + "]");
 
 		} catch (RuntimeException e) {
 

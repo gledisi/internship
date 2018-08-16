@@ -55,8 +55,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Transactional
-	public boolean existUser(String email) {
+	public boolean existUserEmail(String email) {
 		return getLoggedUser(email) != null;
+	}
+
+	@Transactional
+	public boolean existUserCardId(String idCard) {
+		return userDao.getUserFromCardId(idCard) != null;
 	}
 
 	@Transactional

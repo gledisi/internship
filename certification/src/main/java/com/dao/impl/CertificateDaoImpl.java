@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.apache.logging.log4j.LogManager;
@@ -27,9 +26,10 @@ public class CertificateDaoImpl implements CertificateDao {
 
 	public boolean add(Certificate certificate) {
 		try {
-			LOGGER.info("adding certificate!");
+			LOGGER.debug("Manager {} adding certificate {}!" + certificate.getManager().getFirstname(),
+					certificate.getName());
 			entityManager.persist(certificate);
-			LOGGER.info("certificate added!");
+			LOGGER.debug("certificate added successfully!");
 			return true;
 
 		} catch (RuntimeException e) {
@@ -41,9 +41,10 @@ public class CertificateDaoImpl implements CertificateDao {
 
 	public boolean edit(Certificate certificate) {
 		try {
-			LOGGER.info("editing certificate!");
+			LOGGER.debug("Manager {} editing certificate {}!" + certificate.getManager().getFirstname(),
+					certificate.getName());
 			entityManager.merge(certificate);
-			LOGGER.info("Certificate edit!");
+			LOGGER.debug("Certificate edited successfully!");
 			return true;
 
 		} catch (RuntimeException e) {
@@ -55,12 +56,12 @@ public class CertificateDaoImpl implements CertificateDao {
 
 	public boolean delete(int certificateId) {
 		try {
-			LOGGER.info("deleting certificate!");
-			Query query = entityManager.createQuery("update Certificate set validity=:validity where id=:id");
-			query.setParameter("validity", false);
-			query.setParameter("id", certificateId);
-			query.executeUpdate();
-			LOGGER.info("Certificate delete!");
+			Certificate certificate = entityManager.find(Certificate.class, certificateId);
+			LOGGER.debug("Manager {} deleting certificate {}!" + certificate.getManager().getFirstname()
+					+ certificate.getName());
+			certificate.setValidity(false);
+			entityManager.merge(certificate);
+			LOGGER.debug("Certificate deleted!");
 
 			return true;
 
@@ -69,32 +70,6 @@ public class CertificateDaoImpl implements CertificateDao {
 			return false;
 		}
 	}
-
-	// @SuppressWarnings("unchecked")
-	// @Transactional
-	// public List<Certificate> getManagerCertificates(int idManager) {
-	//
-	// List<Certificate> certificates = new ArrayList<Certificate>();
-	//
-	// try {
-	// LOGGER.info("getting certificates of manager!");
-	// Query query = entityManager.createQuery(
-	// "Select certificate From Certificate certificate Where
-	// certificate.validity=:validity And certificate.manager.id=:idManager");
-	// query.setParameter("validity", true);
-	// query.setParameter("idManager", idManager);
-	// certificates = query.getResultList();
-	// LOGGER.info("Certificates of manager retrieved!");
-	// return certificates;
-	//
-	// } catch (RuntimeException e) {
-	//
-	// LOGGER.error("error getting manager certificates !Message: " +
-	// e.getMessage(), e);
-	// return certificates;
-	// }
-	//
-	// }
 
 	public List<Certificate> getCertificates(String description, int idManager) {
 
@@ -107,12 +82,11 @@ public class CertificateDaoImpl implements CertificateDao {
 
 		if (description != null && !description.trim().isEmpty()) {
 			queryBuilder.append(" And certificate.description LIKE :description");
-			queryBuilder.append(" Or certificate.type LIKE :description");
-			queryBuilder.append(" Or certificate.name LIKE :description");
 		}
 
 		try {
-			LOGGER.info("getting certificates of manager! id[" + idManager + "] me description '" + description + "'");
+			LOGGER.debug(
+					"getting certificates of manager! id[" + idManager + "] with description '" + description + "'");
 			TypedQuery<Certificate> query = entityManager.createQuery(queryBuilder.toString(), Certificate.class);
 			query.setParameter("validity", true);
 			query.setParameter("idManager", idManager);
@@ -120,25 +94,24 @@ public class CertificateDaoImpl implements CertificateDao {
 				query.setParameter("description", "%" + description + "%");
 			}
 			certificates = query.getResultList();
-			LOGGER.info("Certificates of manager retrieved!");
-			return certificates;
+			LOGGER.debug("Certificates of manager retrieved!" + certificates);
 
 		} catch (RuntimeException e) {
 
 			LOGGER.error("error getting manager certificates !Message: " + e.getMessage(), e);
-			return certificates;
 		}
-
+		return certificates;
 	}
 
 	public Certificate getCertificateByName(String name) {
 		Certificate certificate = null;
 		try {
-			LOGGER.info("getting certificate by name!");
+			LOGGER.debug("getting certificate by name!");
 			certificate = (Certificate) entityManager
-					.createQuery("Select certificate from Certificate certificate Where certificate.name=:name")
-					.setParameter("name", name).getSingleResult();
-			LOGGER.info("Certificate retrieved!");
+					.createQuery("Select certificate from Certificate certificate" + " Where certificate.name=:name"
+							+ " And certificate.validity=:validity")
+					.setParameter("name", name).setParameter("validity", true).getSingleResult();
+			LOGGER.debug("Certificate retrieved!");
 			return certificate;
 
 		} catch (Exception e) {
@@ -153,9 +126,9 @@ public class CertificateDaoImpl implements CertificateDao {
 
 		try {
 
-			LOGGER.info("getting certificate by name!");
+			LOGGER.debug("getting certificate by name!");
 			certificate = entityManager.find(Certificate.class, idCertificate);
-			LOGGER.info("Certificate retrieved!");
+			LOGGER.debug("Certificate retrieved!");
 
 		} catch (Exception e) {
 			LOGGER.error("error getting certificate by name !Message: " + e.getMessage(), e);

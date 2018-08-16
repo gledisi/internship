@@ -27,8 +27,9 @@
 
 							<p:commandButton class="btn btn-primary btn-lg btn-block"
 								update=":editForm growlEdit"
-								action="#{userCrudBean.editEmployee()}" value="Edit Employee"
-								ajax="true" oncomplete="hideDialogOnSuccess(args, 'editDialog')">
+								actionListener="#{employeeManagementBean.editEmployee()}"
+								value="Edit Employee" ajax="true"
+								oncomplete="hideDialogOnSuccess(args, 'editDialog')">
 							</p:commandButton>
 
 						</div>

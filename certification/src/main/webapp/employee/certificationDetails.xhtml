@@ -9,38 +9,36 @@
 
 <h:body>
 	<div class="col-lg-12 ">
+		<h:form>
 
-		<div class="card-body card-block">
-			<h:form>
+			<div class="card-body card-block">
 				<div class="row form-group">
 					<div class="col col-md-3">
-						<label for="name" class=" form-control-label">Certificate
-							Name</label>
+						<label for="name" class=" form-control-label"> Name</label>
 					</div>
 					<div class="col-12 col-md-9">
-						<label for="name" class=" form-control-label">#{certificationBean.certificationDto.certificatename}</label>
+						<label for="name" class=" form-control-label">#{employeesCertificationBean.employeeCertificationDto.certificatename}</label>
 					</div>
 				</div>
 				<div class="row form-group">
 					<div class="col col-md-3">
-						<label for="name" class=" form-control-label">Certificate
-							Type</label>
+						<label for="name" class=" form-control-label"> Type</label>
 					</div>
 					<div class="col-12 col-md-9">
-						<label for="name" class=" form-control-label">#{certificationBean.certificationDto.certificatetype}</label>
+						<label for="name" class=" form-control-label">#{employeesCertificationBean.employeeCertificationDto.certificatetype}</label>
 					</div>
 				</div>
 				<div class="row form-group">
 					<div class="col col-md-3">
-						<label for="name" class=" form-control-label">Certificate
-							Description</label>
+						<label for="name" class=" form-control-label"> Description</label>
 					</div>
 					<div class="col-12 col-md-9">
-						<label for="name" class=" form-control-label">#{certificationBean.certificationDto.certificateDescription}</label>
+						<label for="name" class=" form-control-label">#{employeesCertificationBean.employeeCertificationDto.certificateDescription}</label>
 					</div>
 				</div>
-			</h:form>
-		</div>
+
+			</div>
+		</h:form>
 	</div>
 
 </h:body>

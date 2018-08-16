@@ -41,7 +41,7 @@
 								</div>
 								<div class="col-12 col-md-9">
 									<h:inputSecret id="password" class="form-control"
-										value="#{userCrudBean.user.password}"
+										value="#{employeeManagementBean.employee.password}"
 										pt:placeholder="**********" required="true"
 										requiredMessage="Passwordi nuk mund te lihet bosh"
 										validatorMessage="Passwordi duhet te kete te pakten 6 karaktere , nje shkronje , nje numer dhe nje karakter special">
@@ -55,7 +55,8 @@
 							<div class="offset-md-2 col-md-8">
 
 								<h:commandButton class="btn btn-primary btn-lg btn-block"
-									action="#{userCrudBean.addEmployee()}" value="ADD EMPLOYEE" />
+									action="#{employeeManagementBean.addEmployee()}"
+									value="ADD EMPLOYEE" />
 
 							</div>
 						</div>

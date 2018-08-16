@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xml>
 <Configuration status="INFO">
+	<Properties>
+		<Property name="baseDir">c:/logs-roll-file/app.log</Property>
+	</Properties>
 	<Appenders>
 		<Console name="console" target="SYSTEM_OUT">
 			<PatternLayout
 				pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
 		</Console>
+		<RollingFile name="rollfile" fileName="${baseDir}"
+			filePattern="c:/logs-roll-file/app-%i.log.gz"
+			ignoreExceptions="false">
+			<PatternLayout
+				pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
+			<Policies>
+				<OnStartupTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="5 KB" />
+			</Policies>
+		</RollingFile>
 	</Appenders>
 
 	<Filters>
@@ -15,6 +28,7 @@
 	<Loggers>
 		<Root level="debug" additivity="false">
 			<AppenderRef ref="console" />
+			<AppenderRef ref="rollfile" />
 		</Root>
 	</Loggers>
 </Configuration>

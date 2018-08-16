@@ -8,8 +8,6 @@
 
 <h:body>
 
-
-
 	<div class="row form-group">
 
 		<div class="col col-md-3">
@@ -17,8 +15,9 @@
 		</div>
 		<div class="col-12 col-md-9">
 			<h:inputText id="firstname" class="form-control"
-				value="#{userCrudBean.user.firstname}" pt:placeholder="Gledis"
-				required="true" requiredMessage="Emri eshte required!"
+				value="#{employeeManagementBean.employee.firstname}"
+				pt:placeholder="Gledis" required="true"
+				requiredMessage="Emri eshte required!"
 				validatorMessage="Emri duhet te permbaje vetem shkronja!">
 				<f:validateRegex pattern="[a-zA-Z]+" />
 			</h:inputText>
@@ -32,7 +31,8 @@
 			<label for="lastname" class="form-control-label">LastName</label>
 		</div>
 		<div class="col-12 col-md-9">
-			<h:inputText id="lastname" value="#{userCrudBean.user.lastname}"
+			<h:inputText id="lastname"
+				value="#{employeeManagementBean.employee.lastname}"
 				class="form-control" pt:placeholder="Gjinaj" required="true"
 				requiredMessage="Mbiemri eshte required!"
 				validatorMessage="Mbiemri duhet te permbaje vetem shkronja!">
@@ -50,11 +50,11 @@
 				<div class="input-group-addon" id="showDate">
 					<i class="fa fa-calendar"></i>
 				</div>
-				<h:inputText id="bitrthday" styleClass="date"
-					value="#{userCrudBean.user.birthday}" required="true"
-					requiredMessage="Zgjidhni daten dhe oren e fillimit te shfaqjes!">
-					<f:convertDateTime dateStyle="full" pattern="yyyy-MM-dd" />
-				</h:inputText>
+				<p:calendar id="birthday"
+					value="#{employeeManagementBean.employee.birthday}"
+					pattern="yyyy-MM-dd" yearRange="1953:2001" navigator="true"
+					required="true"
+					requiredMessage="Zgjidhni daten e lindjes te punonjesit!" />
 			</div>
 		</div>
 	</div>
@@ -65,7 +65,8 @@
 			<label for="idCard" class="form-control-label">Id Card</label>
 		</div>
 		<div class="col-12 col-md-9">
-			<h:inputText id="idCard" value="#{userCrudBean.user.idCard}"
+			<h:inputText id="idCard"
+				value="#{employeeManagementBean.employee.idCard}"
 				class="form-control" pt:placeholder="J1263813Q" required="true"
 				requiredMessage="Id Card is required">
 			</h:inputText>
@@ -78,7 +79,8 @@
 			<label for="email" class="form-control-label">Email</label>
 		</div>
 		<div class="col-12 col-md-9">
-			<h:inputText id="email" value="#{userCrudBean.user.email}"
+			<h:inputText id="email"
+				value="#{employeeManagementBean.employee.email}"
 				class="form-control" pt:placeholder="name@gmail.com" required="true"
 				requiredMessage="Email is required"
 				validatorMessage="Emaili nuk eshte ne formatin e duhur">

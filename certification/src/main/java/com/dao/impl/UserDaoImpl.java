@@ -26,9 +26,9 @@ public class UserDaoImpl implements UserDao {
 
 	public boolean add(User user) {
 		try {
-			LOGGER.info("adding User!");
+			LOGGER.debug("adding User {}!" + user.getFirstname());
 			entityManager.persist(user);
-			LOGGER.info("user added!");
+			LOGGER.debug("user added successfully!");
 			return true;
 
 		} catch (RuntimeException e) {
@@ -40,9 +40,9 @@ public class UserDaoImpl implements UserDao {
 
 	public boolean edit(User user) {
 		try {
-			LOGGER.info("editing user!");
+			LOGGER.debug("editing user {}!" + user.getFirstname());
 			entityManager.merge(user);
-			LOGGER.info("user edit!");
+			LOGGER.debug("user edited successfully!");
 			return true;
 
 		} catch (RuntimeException e) {
@@ -56,12 +56,12 @@ public class UserDaoImpl implements UserDao {
 		try {
 
 			User user = entityManager.find(User.class, userId);
-			LOGGER.info("deleting user!" + user.getFirstname() + "with id=" + user.getId());
+			LOGGER.debug("deleting user {}!" + user.getFirstname());
 			user.setValidity(false);
 			user.getCertifications().stream().filter(certification -> certification.isValidity())
 					.forEach(certification -> certification.setValidity(false));
 			entityManager.merge(user);
-			LOGGER.info("user delete!");
+			LOGGER.debug("user deleted!");
 			return true;
 
 		} catch (Exception e) {
@@ -73,9 +73,9 @@ public class UserDaoImpl implements UserDao {
 	public User getUserFromId(int userId) {
 		User user = new User();
 		try {
-			LOGGER.info("retrieving user by id!" + userId);
+			LOGGER.debug("retrieving user by id!" + userId);
 			user = (User) entityManager.find(User.class, userId);
-			LOGGER.info("user by id retrieved!");
+			LOGGER.debug("user {} by id retrieved successfully!" + user.getFirstname());
 
 		} catch (Exception e) {
 			LOGGER.error("error retrieving user by id !Message: " + e.getMessage(), e);
@@ -87,10 +87,28 @@ public class UserDaoImpl implements UserDao {
 
 		User user = null;
 		try {
-			LOGGER.info("retrieving user by email!");
+			LOGGER.debug("retrieving user by email!");
 			user = (User) entityManager.createQuery("select user from User user where user.email=:email")
 					.setParameter("email", email).getSingleResult();
-			LOGGER.info("user by email retrieved!");
+			LOGGER.debug("user {} retrieved successfully!" + user.getFirstname());
+			return user;
+
+		} catch (Exception e) {
+
+			LOGGER.error("error retrieving user by email !Message: " + e.getMessage(), e);
+			return null;
+		}
+
+	}
+
+	public User getUserFromCardId(String idCard) {
+
+		User user = null;
+		try {
+			LOGGER.debug("retrieving user by idCard!" + idCard);
+			user = (User) entityManager.createQuery("select user from User user where user.idCard=:idCard")
+					.setParameter("idCard", idCard).getSingleResult();
+			LOGGER.debug("user {} retrieved successfully!" + user.getFirstname());
 			return user;
 
 		} catch (Exception e) {
@@ -111,7 +129,7 @@ public class UserDaoImpl implements UserDao {
 			stringBuilder.append(" And user.firstname LIKE :inputSearch");
 		}
 		try {
-			LOGGER.info("retrieving users of manager![Input Search=" + inputSearch + ";Id Manager=" + idManager + "]");
+			LOGGER.debug("retrieving users of manager![Input Search=" + inputSearch + ";Id Manager=" + idManager + "]");
 			TypedQuery<User> query = entityManager.createQuery(stringBuilder.toString(), User.class);
 			query.setParameter("validity", true);
 			query.setParameter("idManager", idManager);
@@ -121,7 +139,7 @@ public class UserDaoImpl implements UserDao {
 			}
 
 			users = query.getResultList();
-			LOGGER.info("user of manager retrieved!" + users);
+			LOGGER.debug("user of manager retrieved successfully!" + users);
 		} catch (RuntimeException e) {
 
 			LOGGER.error("error retrieving user of manager !Message: " + e.getMessage(), e);
@@ -132,10 +150,10 @@ public class UserDaoImpl implements UserDao {
 
 	public boolean changePassword(int userId, String newPassword) {
 		try {
-			LOGGER.info("Changin password for user with id[" + userId + "]");
+			LOGGER.debug("Changin password for user with id[" + userId + "]");
 			entityManager.createQuery("update User  set password =:password where id=:userId")
 					.setParameter("password", newPassword).setParameter("userId", userId).executeUpdate();
-			LOGGER.info("Password changed!");
+			LOGGER.debug("Password changed successfully!");
 			return true;
 		} catch (Exception e) {
 			LOGGER.error("Password failed to change! Message " + e.getMessage());
