@@ -94,7 +94,7 @@ public class EmployeesCertificationBean implements Serializable {
 		List<UserDto> employeesSelected = employeeManagementBean.getSelectedEmployees();
 		int size = employeesSelected.size();
 		if (size != 0) {
-			if (employeeCertificationService.existCertificationOnAddedList(employeesSelected,
+			if (!employeeCertificationService.existCertificationOnAddedList(employeesSelected,
 					addEmployeeCertification.getCertificateId())) {
 				if (employeeCertificationService.addListCertification(employeesSelected, addEmployeeCertification)) {
 					if (size == 1) {

@@ -21,6 +21,13 @@
 	border-style: none !important;
 }
 
+.ui-state-highlight, .ui-widget-content .ui-state-highlight,
+	.ui-widget-header .ui-state-highlight {
+	color: #ffffff !important;
+	text-decoration: none !important;
+	background-color: #0088cc !important;
+}
+
 .ui-widget-content {
 	border: 1px solid #a8a8a8;
 	color: #4f4f4f;
@@ -28,26 +35,27 @@
 	border-right: none;
 }
 
-.deleteButton {
-	color: #fff !important;
-	background: #dc3545 !important;
-	font-weight: normal !important;
-	font-family: Arial, sans-serif !important;
-	font-size: 1em !important;
-	text-shadow: none !important;
-	border: 0 !important;
+
+.button {
+    border: none !important;
+    color: white !important;
+    padding: 1px 15px !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    font-size: 16px !important;
+    cursor: pointer !important;
 }
 
-.editButton {
-	color: #fff !important;
-	background: #007bff !important;
-	font-weight: normal !important;
-	font-family: Arial, sans-serif !important;
-	font-size: 1em !important;
-	text-shadow: none !important;
-	border: 0 !important;
-	padding: .5em 1em !important;
+
+
+.button4 {
+    color: black !important;
+    border: 1px solid #bfbfbf!important;
 }
+
+.button4:hover {background-color: #e7e7e7;}
+
 
 .submitButton {
 	color: #fff !important;
@@ -61,7 +69,6 @@
 
 .OnProgres {
 	background: #f1f2f7c4 !important;
-	
 }
 
 .Failed {
@@ -71,7 +78,6 @@
 
 .Done {
 	background: #0efe0e7a !important;
-	
 }
 
 .ui-button-text-only .ui-button-text {

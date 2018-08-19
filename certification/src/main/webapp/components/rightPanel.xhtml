@@ -27,9 +27,10 @@
 
 			<div class="user-menu dropdown-menu">
 				<h:form>
-					<h:commandLink action="myProfile.xhtml?faces-redirect=true">
+					<h:commandLink action="/profile.xhtml?faces-redirect=true">
 						<i class="menu-icon fa fa-user"></i> My Profile
-					</h:commandLink><br/>
+					</h:commandLink>
+					<br />
 					<h:commandLink action="#{loginBean.logOut()}">
 						<i class="menu-icon fa fa-sign-out"></i> Log out</h:commandLink>
 				</h:form>

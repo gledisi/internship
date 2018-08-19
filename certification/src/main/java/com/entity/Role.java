@@ -1,15 +1,13 @@
 package com.entity;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -27,8 +25,6 @@ public class Role implements Serializable{
 	@Column(columnDefinition = "TINYINT", length = 1)
 	private boolean validity;
 	
-	@OneToMany(mappedBy = "role")
-	private Set<User> users = new HashSet<User>();
 	
 	public Integer getId() {
 		return id;
@@ -41,12 +37,6 @@ public class Role implements Serializable{
 	}
 	public void setRole(String role) {
 		this.role = role;
-	}
-	public Set<User> getUsers() {
-		return users;
-	}
-	public void setUsers(Set<User> users) {
-		this.users = users;
 	}
 	public boolean isValidity() {
 		return validity;

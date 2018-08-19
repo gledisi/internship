@@ -43,7 +43,8 @@ public class UserFilter implements Filter {
 			if ((currentPath.contains("login.xhtml") || currentPath.contains("error403.xhtml"))
 					&& !allowed(currentPath)) {
 				res.sendRedirect("home.xhtml");
-			} else if (!currentPath.contains(userDto.getRole() + "/") && !allowed(currentPath)) {
+			} else if ((!currentPath.contains(userDto.getRole() + "/") && !pageAllowed(currentPath))
+					&& !allowed(currentPath)) {
 				res.sendError(403);
 			} else {
 				chain.doFilter(request, response);
@@ -71,4 +72,10 @@ public class UserFilter implements Filter {
 		return path.contains("javax.faces.resource") || path.contains(".png") || path.contains("resources");
 	}
 
+	private boolean pageAllowed(String url) {
+		if (url.contains("home.xhtml") || url.contains("profile.xhtml") || url.contains("generalError.xhtml")) {
+			return true;
+		}
+		return false;
+	}
 }

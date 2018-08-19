@@ -22,6 +22,14 @@ public class UserBean implements Serializable {
 		user = null;
 	}
 
+	public boolean isManager() {
+		return user.getRole().equalsIgnoreCase("manager");
+	}
+
+	public boolean isEmployee() {
+		return user.getRole().equalsIgnoreCase("employee");
+	}
+
 	// GETTERS AND SETTERS
 	public UserDto getUser() {
 		return user;

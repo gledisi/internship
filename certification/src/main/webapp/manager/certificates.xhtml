@@ -13,7 +13,8 @@
 
 	<p:growl id="growl" life="6000" />
 
-	<ui:include name="header" src="/manager/managerSidebar.xhtml" />
+	<ui:include name="header" src="/components/leftPanel.xhtml" />
+
 	<div id="right-panel" class="right-panel">
 
 		<ui:include name="header" src="/components/rightPanel.xhtml" />
@@ -96,23 +97,23 @@
 							<p:panelGrid>
 
 								<p:commandButton title="Edit this certificate" proces="@this"
-									update="dialogEdit" icon="ui-icon-pencil"
+									update="dialogEdit" icon="fa fa-edit"
 									oncomplete="PF('editDialog').show()">
 									<f:setPropertyActionListener
 										target="#{certificateBean.certificate}" value="#{certificate}" />
 								</p:commandButton>
 
-								<p:commandButton icon="ui-icon-trash"
+								<p:commandButton icon="fa fa-trash"
 									title="Delete this certificate"
 									update="growl certificatesTable"
 									actionListener="#{certificateBean.deleteCertificate(certificate.id)}">
-									<p:confirm header="Confirm" message="Are you sure ?"
+									<p:confirm header="Confirm"
+										message="Delete certificate #{certificate.name}?"
 										icon="ui-icon-alert" />
 								</p:commandButton>
 
 								<p:confirmDialog global="true" showEffect="fade"
-									hideEffect="fade">
-
+									hideEffect="fade" width="280">
 									<p:commandButton value="Yes" type="button"
 										styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 									<p:commandButton value="No" type="button"

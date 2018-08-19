@@ -22,6 +22,7 @@
 					</div>
 					<div class="col-9 col-md-9">
 						<h:selectOneMenu id="sattus" name="status" style="width:180px"
+							class="form-control"
 							value="#{employeesCertificationBean.employeeCertificationDto.statusId}"
 							required="true" requiredMessage="Zgjidhni Statusin!">
 							<f:selectItem itemLabel="Status" />
@@ -40,8 +41,8 @@
 					<div class="col-9 col-md-9">
 						<p:spinner
 							value="#{employeesCertificationBean.employeeCertificationDto.points}"
-							style="padding-right:8px" min="0" max="100" size="18"
-							maxlength="3" />
+							style="padding-bottom:0px;padding-right: 8px" min="0" max="100"
+							size="18" maxlength="3" />
 					</div>
 				</div>
 			</div>

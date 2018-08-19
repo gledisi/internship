@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,17 +31,14 @@ public class Certification implements Serializable {
 	@Column(columnDefinition = "TINYINT", length = 4)
 	private boolean validity;
 
-	@ElementCollection
 	@ManyToOne
 	@JoinColumn(name = "idCertificate", nullable = false)
 	private Certificate certificate;
 
-	@ElementCollection
 	@ManyToOne
 	@JoinColumn(name = "idEmployee", nullable = false)
 	private User employee;
 
-	@ElementCollection
 	@ManyToOne
 	@JoinColumn(name = "idStatus", nullable = false)
 	private Status status;

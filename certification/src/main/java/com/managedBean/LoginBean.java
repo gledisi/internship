@@ -31,7 +31,7 @@ public class LoginBean implements Serializable {
 		UserDto userDto = userService.getLoggedUser(email);
 		if (userDto != null && passwordEncryptor.checkPassword(password, userDto.getPassword())) {
 			userBean.setUser(userDto);
-			return userDto.getRole().toLowerCase() + "/home.xhtml?faces-redirect=true";
+			return "home.xhtml?faces-redirect=true";
 
 		} else {
 			Messages.addMessage(Messages.bundle.getString("INCORRECT_DATA"), "error");

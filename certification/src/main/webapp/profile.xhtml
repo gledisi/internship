@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<ui:include name="header" src="/components/header.xhtml" />
+
+
+<h:body>
+	<p:growl id="profileGrowl" delay="5000" />
+
+	<ui:include name="header" src="/components/leftPanel.xhtml" />
+
+	<div id="right-panel" class="right-panel">
+
+		<ui:include name="header" src="/components/rightPanel.xhtml" />
+
+		<div class="content mt-2">
+			<div class="row">
+				<!-- forma2-->
+				<div class="col-lg-12 " />
+				<div class="col-lg-2 " />
+				<div class="col-lg-6 ">
+					<h:form id="formProfile">
+						<div class="card">
+							<div class="card-header">
+								<strong class="card-title">Change Password</strong>
+							</div>
+							<div class="card-body card-block">
+
+								<div class="row form-group">
+									<div class="col col-md-4">
+										<label for="oldPassword" class="form-control-label">Password</label>
+									</div>
+									<div class="col-12 col-md-6">
+										<h:inputSecret id="password" class="form-control"
+											value="#{employeeManagementBean.passwordDto.oldPassword}"
+											required="true"
+											requiredMessage="Passwordi nuk mund te lihet bosh"
+											validatorMessage="Passwordi duhet te kete te pakten 6 karaktere , nje shkronje , nje numer dhe nje karakter special">
+											<f:validateRegex
+												pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{6,20})" />
+										</h:inputSecret>
+									</div>
+								</div>
+
+								<div class="row form-group">
+									<div class="col col-md-4">
+										<label for="password" class="form-control-label">New
+											Password</label>
+									</div>
+									<div class="col-12 col-md-6">
+										<h:inputSecret id="newpassword" class="form-control"
+											value="#{employeeManagementBean.passwordDto.newPassword}"
+											required="true"
+											requiredMessage="Passwordi nuk mund te lihet bosh"
+											validatorMessage="Passwordi duhet te kete te pakten 6 karaktere , nje shkronje , nje numer dhe nje karakter special">
+											<f:validateRegex
+												pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{6,20})" />
+										</h:inputSecret>
+									</div>
+								</div>
+
+								<div class="row form-group">
+									<div class="col col-md-4">
+										<label for="password" class="form-control-label">Confirm
+											Password</label>
+									</div>
+									<div class="col-12 col-md-6">
+										<h:inputSecret id="confirmPassword" class="form-control"
+											value="#{employeeManagementBean.passwordDto.confirmPassword}"
+											required="true"
+											requiredMessage="Passwordi nuk mund te lihet bosh"
+											validatorMessage="Passwordi duhet te kete te pakten 6 karaktere , nje shkronje , nje numer dhe nje karakter special">
+											<f:validateRegex
+												pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{6,20})" />
+										</h:inputSecret>
+									</div>
+								</div>
+
+							</div>
+							<div class="card-footer">
+								<div class="offset-md-3 col-md-6">
+									<h:commandButton class="btn btn-primary btn-lg btn-block"
+										update=":formPrfile passwordGrowl"
+										actionListener="#{employeeManagementBean.changePassword()}"
+										value="Change Password" />
+								</div>
+							</div>
+						</div>
+					</h:form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<ui:include name="footer" src="/components/footer.xhtml" />
+</h:body>
+</html>

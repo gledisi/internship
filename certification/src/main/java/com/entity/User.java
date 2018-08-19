@@ -7,7 +7,6 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -47,7 +46,6 @@ public class User implements Serializable {
 	@Column(columnDefinition = "TINYINT", length = 4)
 	private boolean validity;
 
-	@ElementCollection
 	@ManyToOne
 	@JoinColumn(name = "idRole", nullable = false)
 	private Role role;
