@@ -15,34 +15,30 @@
 
 			<div class="card-body card-block">
 
+
 				<div class="row form-group">
 
-					<div class="col col-md-3">
-						<label for="certificate" class="form-control-label">Status</label>
+					<div class="col col-md-4">
+						<label for="certificate" class="form-control-label">Certificate
+						</label>
 					</div>
-					<div class="col-9 col-md-9">
-						<h:selectOneMenu id="sattus" name="status" style="width:180px"
-							class="form-control"
-							value="#{employeesCertificationBean.employeeCertificationDto.statusId}"
-							required="true" requiredMessage="Zgjidhni Statusin!">
-							<f:selectItem itemLabel="Status" />
-							<f:selectItems
-								value="#{employeesCertificationBean.getCertificationStatus()}"
-								var="status" itemValue="#{status.id}"
-								itemLabel="#{status.status}" />
-						</h:selectOneMenu>
+					<div class="col-12 col-md-8">
+						#{employeesCertificationBean.employeeCertificationDto.certificatename}
 					</div>
 				</div>
 
 				<div class="row form-group">
-					<div class="col col-md-3">
+					<div class="col col-md-4">
 						<label for="type" class="form-control-label">Points</label>
 					</div>
-					<div class="col-9 col-md-9">
+					<div class="col-9 col-md-8">
 						<p:spinner
 							value="#{employeesCertificationBean.employeeCertificationDto.points}"
-							style="padding-bottom:0px;padding-right: 8px" min="0" max="100"
-							size="18" maxlength="3" />
+							style="padding-bottom:0px;padding-right: 8px" size="16"
+							maxlength="3"
+							validatorMessage="Jepni numrin pikeve ne intervalin nga 0-100!">
+							<f:validateDoubleRange minimum="0" maximum="100" />
+						</p:spinner>
 					</div>
 				</div>
 			</div>

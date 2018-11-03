@@ -14,7 +14,9 @@ import com.dto.EmployeeCertificationSearchDto;
 import com.dto.StatusDto;
 import com.dto.UserDto;
 import com.services.EmployeeCertificationService;
+import com.utility.EmployeeCertificate;
 import com.utility.Messages;
+import com.utility.Validate;
 
 @ManagedBean
 @ViewScoped
@@ -75,42 +77,47 @@ public class EmployeesCertificationBean implements Serializable {
 	}
 
 	public String addCertification() {
-		if (!employeeCertificationService.existCertification(addEmployeeCertification.getCertificateId(),
-				addEmployeeCertification.getEmployeeId())) {
-			if (employeeCertificationService.add(addEmployeeCertification)) {
-				Messages.addMessage(Messages.bundle.getString("CERTIFICATION_ADDED"), "info");
-				refreshBean();
-			} else {
-				Messages.addMessage(Messages.bundle.getString("CERTIFICATION_NOT_ADDED"), "error");
-			}
-		} else {
-			Messages.addMessage(Messages.bundle.getString("CERTIFICATION_EXIST"), "warn");
-			refreshBean();
-		}
-		return null;
-	}
-
-	public String addCertificationForSelectedEmployee() {
-		List<UserDto> employeesSelected = employeeManagementBean.getSelectedEmployees();
-		int size = employeesSelected.size();
-		if (size != 0) {
-			if (!employeeCertificationService.existCertificationOnAddedList(employeesSelected,
-					addEmployeeCertification.getCertificateId())) {
-				if (employeeCertificationService.addListCertification(employeesSelected, addEmployeeCertification)) {
-					if (size == 1) {
-						Messages.addMessage(Messages.bundle.getString("CERTIFICATION_ADDED"), "info");
-					} else {
-						Messages.addMessage(Messages.bundle.getString("CERTIFICATIONS_ADDED"), "info");
-					}
+		if (Validate.dateOfCertification(addEmployeeCertification.getDate())) {
+			if (!employeeCertificationService.existCertification(addEmployeeCertification.getCertificateId(),
+					addEmployeeCertification.getEmployeeId())) {
+				if (employeeCertificationService.add(addEmployeeCertification)) {
+					Messages.addMessage(Messages.bundle.getString("CERTIFICATION_ADDED"), "info");
 					refreshBean();
 				} else {
 					Messages.addMessage(Messages.bundle.getString("CERTIFICATION_NOT_ADDED"), "error");
 				}
 			} else {
-				Messages.addMessage(Messages.bundle.getString("CERTIFICATIONS_EXIST"), "warn");
+				Messages.addMessage(Messages.bundle.getString("CERTIFICATION_EXIST"), "warn");
+				refreshBean();
 			}
-		} else {
-			Messages.addMessage(Messages.bundle.getString("EMPLOYEES_NOT_SELECTED"), "warn");
+		}
+		return null;
+	}
+
+	public String addCertificationForSelectedEmployee() {
+		if (Validate.dateOfCertification(addEmployeeCertification.getDate())) {
+			List<UserDto> employeesSelected = employeeManagementBean.getSelectedEmployees();
+			int size = employeesSelected.size();
+			if (size != 0) {
+				if (!employeeCertificationService.existCertificationOnAddedList(employeesSelected,
+						addEmployeeCertification.getCertificateId())) {
+					if (employeeCertificationService.addListCertification(employeesSelected,
+							addEmployeeCertification)) {
+						if (size == 1) {
+							Messages.addMessage(Messages.bundle.getString("CERTIFICATION_ADDED"), "info");
+						} else {
+							Messages.addMessage(Messages.bundle.getString("CERTIFICATIONS_ADDED"), "info");
+						}
+						refreshBean();
+					} else {
+						Messages.addMessage(Messages.bundle.getString("CERTIFICATION_NOT_ADDED"), "error");
+					}
+				} else {
+					Messages.addMessage(Messages.bundle.getString("CERTIFICATIONS_EXIST"), "warn");
+				}
+			} else {
+				Messages.addMessage(Messages.bundle.getString("EMPLOYEES_NOT_SELECTED"), "warn");
+			}
 		}
 
 		return null;
@@ -118,7 +125,8 @@ public class EmployeesCertificationBean implements Serializable {
 
 	public String updateCertification() {
 
-		System.out.println(employeeCertificationDto.getId());
+		employeeCertificationDto
+				.setStatusId(EmployeeCertificate.setStatusOfCertifcate(employeeCertificationDto.getPoints()));
 
 		if (employeeCertificationService.edit(employeeCertificationDto)) {
 			Messages.addMessage(Messages.bundle.getString("CERTIFICATION_EDIT"), "info");

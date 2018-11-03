@@ -37,18 +37,18 @@
 						update="employeeDialog" oncomplete="PF('editDialog').show()" />
 					<f:facet name="header">
 						<div class="content mt-3">
-							<div class="form-group">
-								<div class="input form-group">
-
-									<h:inputText id="search"
-										value="#{employeeManagementBean.inputSearch}"
-										pt:placeholder="Search..."
-										onkeyup="if(event.keyCode==13)this.blur();"
-										onchange="document.getElementById('searchButton').click();">
-									</h:inputText>
-									<h:commandButton id="searchButton" value="search"
-										actionListener="#{employeeManagementBean.getEmployees()}" />
-
+							<div class="form-inline">
+								<div class="form-group">
+									<div class="input form-group">
+										<h:inputText id="search"
+											value="#{employeeManagementBean.inputSearch}"
+											pt:placeholder="Search..."
+											onkeyup="if(event.keyCode==13)this.blur();"
+											onchange="document.getElementById('searchButton').click();">
+										</h:inputText>
+										<h:commandButton id="searchButton" value="search"
+											actionListener="#{employeeManagementBean.getEmployees()}" />
+									</div>
 								</div>
 							</div>
 						</div>

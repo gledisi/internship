@@ -43,33 +43,33 @@ public class CertificateServiceImpl implements CertificateService {
 		return control;
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<CertificateDto> getCertificates(String description, int idManager) {
 		return CertificateConverter.toCertificateListDto(certificateDao.getCertificates(description, idManager));
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public CertificateDto getCertificateById(int idCertificate) {
 		return CertificateConverter.toCertificateDto(certificateDao.getCertificateById(idCertificate));
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public CertificateDto getCertificateByName(String name) {
 		Certificate certificate = certificateDao.getCertificateByName(name);
 		return certificate == null ? null : CertificateConverter.toCertificateDto(certificate);
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public boolean existCertificate(String name) {
 		return getCertificateByName(name) != null;
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public boolean canDeleteCertificate(int idCertificate) {
 		return certificateDao.getCertificateById(idCertificate).getCertifications().isEmpty();
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public boolean canDeleteListCertificates(List<CertificateDto> certificates) {
 		boolean canDelete = true;
 		for (CertificateDto certificate : certificates) {

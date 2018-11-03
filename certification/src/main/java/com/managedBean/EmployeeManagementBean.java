@@ -15,6 +15,7 @@ import com.dto.PasswordDto;
 import com.dto.UserDto;
 import com.services.UserService;
 import com.utility.Messages;
+import com.utility.Validate;
 
 @ManagedBean(name = "employeeManagementBean")
 @ViewScoped
@@ -54,25 +55,26 @@ public class EmployeeManagementBean implements Serializable {
 
 	public String addEmployee() {
 
-		employee.setManagedBy(userBean.getUser().getId());
+		if (Validate.birthdayOfEmployee(employee.getBirthday())) {
+			employee.setManagedBy(userBean.getUser().getId());
 
-		if (!userService.existUserEmail(employee.getEmail())) {
+			if (!userService.existUserEmail(employee.getEmail())) {
 
-			if (!userService.existUserCardId(employee.getIdCard())) {
-				if (userService.add(employee)) {
-					Messages.addFlushMessage(Messages.bundle.getString("EMPLOYEE_ADDED"), "info");
-					return "employees.xhtml?faces-redirect=true";
+				if (!userService.existUserCardId(employee.getIdCard())) {
+					if (userService.add(employee)) {
+						Messages.addFlushMessage(Messages.bundle.getString("EMPLOYEE_ADDED"), "info");
+						return "employees.xhtml?faces-redirect=true";
+					} else {
+						Messages.addMessage(Messages.bundle.getString("EMPLOYEE_NOT_ADDED"), "error");
+					}
 				} else {
-					Messages.addMessage(Messages.bundle.getString("EMPLOYEE_NOT_ADDED"), "error");
+					Messages.addMessage(Messages.bundle.getString("EMPLOYEE_CARDID_EXIST"), "warn");
 				}
+
 			} else {
-				Messages.addMessage(Messages.bundle.getString("EMPLOYEE_CARDID_EXIST"), "warn");
+				Messages.addMessage(Messages.bundle.getString("EMPLOYEE_EMAIL_EXIST"), "warn");
 			}
-
-		} else {
-			Messages.addMessage(Messages.bundle.getString("EMPLOYEE_EMAIL_EXIST"), "warn");
 		}
-
 		return null;
 	}
 

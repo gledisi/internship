@@ -61,7 +61,7 @@ public class EmployeeCertificationServiceImpl implements EmployeeCertificationSe
 		return control;
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public boolean existCertificationOnAddedList(List<UserDto> users, int idCertificate) {
 		boolean exist = false;
 		for (UserDto userDto : users) {
@@ -73,31 +73,32 @@ public class EmployeeCertificationServiceImpl implements EmployeeCertificationSe
 		return exist;
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public boolean existCertification(int idCertificate, int idUser) {
 		return getEmployeeCertifications(idUser).stream()
 				.anyMatch(certification -> certification.getCertificateId() == idCertificate);
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<EmployeeCertificationDto> getManagerCertifications(String description, String status, String employee,
 			int idManager) {
 		return EmployeeCertificationConverter.toCertificationListDto(
 				certificationDao.getManagerCertifications(description, status, employee, idManager));
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<EmployeeCertificationDto> getEmployeeCertifications(String status, String description, int idEmployee) {
 		return EmployeeCertificationConverter
 				.toCertificationListDto(certificationDao.getEmployeeCertifications(status, description, idEmployee));
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<EmployeeCertificationDto> getEmployeeCertifications(int idEmployee) {
 		return EmployeeCertificationConverter
 				.toCertificationListDto(certificationDao.getEmployeeCertifications(idEmployee));
 	}
 
+	@Transactional(readOnly = true)
 	public List<StatusDto> getCertificationStatus(String currentStatus) {
 		return StatusConverter.toStatusListDto(statusDao.getOtherStatus(currentStatus));
 	}

@@ -42,29 +42,29 @@ public class UserServiceImpl implements UserService {
 		return control;
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public UserDto getUserFromId(int userId) {
 		User user = userDao.getUserFromId(userId);
 		return user == null ? null : UserConverter.toUserDto(user);
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public UserDto getLoggedUser(String email) {
 		User user = userDao.getLoggedUser(email);
 		return user == null ? null : UserConverter.toUserDto(user);
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public boolean existUserEmail(String email) {
 		return getLoggedUser(email) != null;
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public boolean existUserCardId(String idCard) {
 		return userDao.getUserFromCardId(idCard) != null;
 	}
 
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<UserDto> getEmployeesOfManager(String inputSearch, int idManager) {
 		return UserConverter.toUserListDto(userDao.getEmployeesOfManager(inputSearch, idManager));
 	}

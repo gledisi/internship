@@ -155,6 +155,7 @@
 
 						<p:commandButton icon="fa fa-edit" ajax="true"
 							rendered="#{userBean.isEmployee()}"
+							disabled="#{employeesCertification.status!='OnProgres'}"
 							title="Update this certifaction" update="dialog"
 							oncomplete="PF('varDialog').show()">
 							<f:setPropertyActionListener
@@ -184,7 +185,7 @@
 	</p:dialog>
 
 	<p:dialog id="dialog" widgetVar="varDialog" resizable="false"
-		header="Update Certification" modal="true">
+		header="Update Certification" modal="true" width="380px">
 		<p:ajax event="close"
 			update=":employeesCertificationForm:employeesCertificationTable" />
 		<ui:include src="/employee/updateCertification.xhtml" />
